@@ -1,0 +1,15 @@
+{
+  "name": "duurzaamheidsradar",
+  "version": "1.0.0",
+  "description": "Welkom bij de [duurzaamheidsradar](https://duurzaamheidsradar.wigo4it.nl) van Wigo4it! Deze radar is geïnspireerd door de Thoughtworks & Zalando Radar en heeft als doel om onze huidige positie als organisatie op het gebied van duurzaamheid inzichtelijk te maken en tegelijkertijd bewustwording te creëren.",
+  "main": "radar.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "d3": "^4.13.0"
+  }
+}

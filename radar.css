@@ -1,0 +1,51 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+:root {
+  --kleur-achtergrond: #f2f8f6; /*#005452; officieel #00116E */
+  --kleur-tekst: black;
+  --kleur-doing: #007351; /*#66d18f;*/
+  --kleur-ongoing: #66ab96; /*white;*/
+  --kleur-planning: #9f7ba9; /*#f5666b;*/
+  --kleur-undoing: #5f236f; /*#ba4fab;*/
+  --kleur-sufficient: #f5666b;
+  --kleur-carbonaware: #ba4fab;
+  --kleur-energie: #66d18f;
+  --kleur-gebruik: #f5666b;
+  --kleur-software: red;
+  --kleur-data: green;
+  --kleur-werken: blue;
+  --kleur-organisatie: grey;
+  --kleur-doelen: blue;
+}
+body {
+  font-family: 'Poppins';
+  padding-top: 10px;
+  padding-bottom: 50px;
+  background-color: var(--kleur-achtergrond);
+  color: var(--kleur-tekst);
+}
+img {
+  width: 210px;
+}
+h1 {
+  padding: 0 15px 0 15px;
+}
+h3 {
+  margin-top: 30px;
+}
+li {
+  margin: 20px 50px 0 0;
+}
+a {
+  color: var(--kleur-accent);
+}
+.center-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.column {
+  width: 640px;
+  padding: 0 20px 0 20px;
+}
