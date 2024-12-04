@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # SIIA radar, bij het Sustainable IT Impact Assessment van NCDD
 Welkom bij de [SIIA Radar](https://duurzaamheidsradar.wigo4it.nl), de sustainable IT Imapact Asessment van de Nationale Coalitie Duurzame Digitalisering! Deze radar is geïnspireerd op het werk van WiGo4IT, Thoughtworks & Zalando Radar en heeft als doel om onze huidige positie als organisatie op het gebied van duurzaamheid inzichtelijk te maken en tegelijkertijd bewustwording te creëren.
 
