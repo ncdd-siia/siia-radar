@@ -14,7 +14,7 @@ De code voor deze radar is open-source en beschikbaar op GitHub. U kunt de code 
 
 Samen kunnen we werken aan een duurzamere toekomst. Bedankt voor uw interesse en bijdrage aan de Duurzaamheidsradar van Wigo4it!
 
-![Screenshot duurzaamheidsradar Wigo4it](duurzaamheidsradar.png)
+![Screenshot duurzaamheidsradar SIIA](duurzaamheidsradar.png)
 
 # Duurzaamheidsradar Licentie
 
