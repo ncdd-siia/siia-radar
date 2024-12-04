@@ -1,0 +1,494 @@
+[
+  {
+    "quadrant": 2, 
+    "ring": 0,
+    "label": "Energielabel A+",
+    "link": "wiki.html?page=energielabelAplus",
+    "status": 0
+  },
+  {
+    "quadrant": 2, 
+    "ring": 0,
+    "label": "Archiefwet",
+    "link": "wiki.html?page=archiefwet",
+    "status": 0
+  },
+  {
+    "quadrant": 2, 
+    "ring": 0,
+    "label": "Statiegeld",
+    "link": "wiki.html?page=statiegeld",
+    "status": 0
+  },
+  {
+    "quadrant": 2, 
+    "ring": 0,
+    "label": "STOMP",
+    "link": "wiki.html?page=stomp",
+    "status": 0
+  },
+  {
+    "quadrant": 2, 
+    "ring": 0,
+    "label": "Digitaal ondertekenen",
+    "link": "wiki.html?page=digitaalOndertekenen",
+    "status": 0
+  },
+  {
+    "quadrant": 2, 
+    "ring": 0,
+    "label": "Bank",
+    "link": "wiki.html?page=bank",
+    "status": 0
+  },
+  {
+    "quadrant": 2, 
+    "ring": 0,
+    "label": "Schoonmaak",
+    "link": "wiki.html?page=schoonmaak",
+    "status": 0
+  },
+  {
+    "quadrant": 2, 
+    "ring": 1,
+    "label": "Inkoopbeleid",
+    "link": "wiki.html?page=inkoopbeleid",
+    "status": 0
+  },
+ {
+    "quadrant": 2, 
+    "ring": 3,
+    "label": "TEST",
+    "link": "wiki.html?page=inkoopbeleid",
+    "status": 3
+  },
+
+  {
+    "quadrant": 2, 
+    "ring": 1,
+    "label": "Hardware",
+    "link": "wiki.html?page=hardware",
+    "status": 0
+  },
+  {
+    "quadrant": 2, 
+    "ring": 1,
+    "label": "Lunch",
+    "link": "wiki.html?page=lunch",
+    "status": 0
+  },
+  {
+    "quadrant": 2, 
+    "ring": 1,
+    "label": "Aanbesteding",
+    "link": "wiki.html?page=aanbesteding",
+    "status": 0
+  },
+  {
+    "quadrant": 2, 
+    "ring": 1,
+    "label": "Koffie en thee",
+    "link": "wiki.html?page=koffieEnThee",
+    "status": 0
+  },
+  {
+    "quadrant": 2, 
+    "ring": 2,
+    "label": "1% van de begroting",
+    "link": "wiki.html?page=1procentVanDeBegroting",
+    "status": 0
+  },
+  {
+    "quadrant": 2, 
+    "ring": 2,
+    "label": "5% van de tijd",
+    "link": "wiki.html?page=5procentVanDeTijd",
+    "status": 0
+  },
+  {
+    "quadrant": 2, 
+    "ring": 2,
+    "label": "CSRD Rapportage",
+    "link": "wiki.html?page=csrdRapportage",
+    "status": 0
+  },
+  {
+    "quadrant": 2, 
+    "ring": 2,
+    "label": "Productvisie",
+    "link": "wiki.html?page=productvisie",
+    "status": 0
+  },
+  {
+    "quadrant": 2, 
+    "ring": 2,
+    "label": "Zoekmachine",
+    "link": "wiki.html?page=zoekmachine",
+    "status": 0
+  },
+  {
+    "quadrant": 2, 
+    "ring": 3,
+    "label": "Dashboards",
+    "link": "wiki.html?page=dashboards",
+    "status": 0
+  },
+  {
+    "quadrant": 2, 
+    "ring": 3,
+    "label": "E-mail",
+    "link": "wiki.html?page=email",
+    "status": 0
+  },
+  {
+    "quadrant": 2, 
+    "ring": 3,
+    "label": "Waterflessen",
+    "link": "wiki.html?page=waterflessen",
+    "status": 0
+  },
+  {
+    "quadrant": 3, 
+    "ring": 0,
+    "label": "Public Cloud",
+    "link": "wiki.html?page=publicCloud",
+    "status": 0
+  },
+  {
+    "quadrant": 3, 
+    "ring": 0,
+    "label": "Bouw conform je SLA",
+    "link": "wiki.html?page=bouwConformJeSLA",
+    "status": 0
+  },
+  {
+    "quadrant": 3, 
+    "ring": 0,
+    "label": "Cattle",
+    "link": "wiki.html?page=cattle",
+    "status": 0
+  },
+  {
+    "quadrant": 3, 
+    "ring": 0,
+    "label": "Webbased",
+    "link": "wiki.html?page=webbased",
+    "status": 0
+  },
+  {
+    "quadrant": 3, 
+    "ring": 0,
+    "label": "Batches",
+    "link": "wiki.html?page=batches",
+    "status": 1
+  },
+
+  {
+    "quadrant": 3, 
+    "ring": 1,
+    "label": "Verwijder strategie",
+    "link": "wiki.html?page=verwijderStrategie",
+    "status": 1
+  },
+  {
+    "quadrant": 3, 
+    "ring": 1,
+    "label": "API's",
+    "link": "wiki.html?page=APIs",
+    "status": 2
+  },
+  {
+    "quadrant": 3, 
+    "ring": 1,
+    "label": "Event-driven",
+    "link": "wiki.html?page=eventDriven",
+    "status": 2
+  },
+  {
+    "quadrant": 3, 
+    "ring": 2,
+    "label": "ARM Architectuur",
+    "link": "wiki.html?page=armArchitectuur",
+    "status": 3
+  },
+  {
+    "quadrant": 3, 
+    "ring": 2,
+    "label": "Electricity Map",
+    "link": "wiki.html?page=electricityMap",
+    "status": 3
+  },
+  {
+    "quadrant": 3, 
+    "ring": 2,
+    "label": "Green builds",
+    "link": "wiki.html?page=greenBuilds",
+    "status": 0
+  },
+  {
+    "quadrant": 3, 
+    "ring": 2,
+    "label": "CO2monitoring",
+    "link": "wiki.html?page=CO2monitoring",
+    "status": 0
+  },
+  {
+    "quadrant": 3, 
+    "ring": 3,
+    "label": "Twin datacenters",
+    "link": "wiki.html?page=twinDatacenters",
+    "status": 0
+  },
+  {
+    "quadrant": 3, 
+    "ring": 3,
+    "label": "Pets",
+    "link": "wiki.html?page=pets",
+    "status": 0
+  },
+  {
+    "quadrant": 3, 
+    "ring": 3,
+    "label": "Dark data",
+    "link": "wiki.html?page=darkData",
+    "status": 0
+  },
+  {
+    "quadrant": 3, 
+    "ring": 3,
+    "label": "IaaS",
+    "link": "wiki.html?page=iaas",
+    "status": 0
+  },
+  {
+    "quadrant": 3, 
+    "ring": 3,
+    "label": "Client Server",
+    "link": "wiki.html?page=clientServer",
+    "status": 0
+  },
+  {
+    "quadrant": 3, 
+    "ring": 3,
+    "label": "Backups",
+    "link": "wiki.html?page=backups",
+    "status": 0
+  },
+  {
+    "quadrant": 0, 
+    "ring": 0,
+    "label": "X as Code",
+    "link": "wiki.html?page=xAsCode",
+    "status": 0
+  },
+  {
+    "quadrant": 0, 
+    "ring": 0,
+    "label": "Self-service",
+    "link": "wiki.html?page=selfService",
+    "status": 0
+  },
+  {
+    "quadrant": 0, 
+    "ring": 0,
+    "label": "Containerization",
+    "link": "wiki.html?page=containerization",
+    "status": 0
+  },
+  {
+    "quadrant": 0, 
+    "ring": 0,
+    "label": "Green Coding",
+    "link": "wiki.html?page=greenCoding",
+    "status": 0
+  },
+  {
+    "quadrant": 0, 
+    "ring": 0,
+    "label": "Scaling",
+    "link": "wiki.html?page=scaling",
+    "status": 0
+  },
+  {
+    "quadrant": 0, 
+    "ring": 1,
+    "label": "Software patterns",
+    "link": "wiki.html?page=greenSoftwarePatterns",
+    "status": 0
+  },
+  {
+    "quadrant": 0, 
+    "ring": 1,
+    "label": "Right Size",
+    "link": "wiki.html?page=rightSizeProvisioning",
+    "status": 0
+  },
+  {
+    "quadrant": 0, 
+    "ring": 2,
+    "label": "Energy proportionality",
+    "link": "wiki.html?page=energyProportionality",
+    "status": 0
+  },
+  {
+    "quadrant": 0, 
+    "ring": 2,
+    "label": "Data Collection Rules",
+    "link": "wiki.html?page=dataCollectionRules",
+    "status": 0
+  },
+  {
+    "quadrant": 0, 
+    "ring": 2,
+    "label": "Carbon Aware SDK",
+    "link": "wiki.html?page=carbonAwareSDK",
+    "status": 0
+  },
+  {
+    "quadrant": 0, 
+    "ring": 2,
+    "label": "Algoritme",
+    "link": "wiki.html?page=algoritme",
+    "status": 0
+  },
+  {
+    "quadrant": 0, 
+    "ring": 2,
+    "label": "Berichtenbox",
+    "link": "wiki.html?page=berichtenbox",
+    "status": 0
+  },
+  {
+    "quadrant": 0, 
+    "ring": 3,
+    "label": "Python",
+    "link": "wiki.html?page=python",
+    "status": 0
+  },
+  {
+    "quadrant": 0, 
+    "ring": 3,
+    "label": "Full data sets",
+    "link": "wiki.html?page=fullDataSets",
+    "status": 0
+  },
+  {
+    "quadrant": 1, 
+    "ring": 0,
+    "label": "On-demand",
+    "link": "wiki.html?page=onDemand",
+    "status": 0
+  },
+  {
+    "quadrant": 1, 
+    "ring": 0,
+    "label": "Terracost",
+    "link": "wiki.html?page=terracost",
+    "status": 0
+  },
+  {
+    "quadrant": 1, 
+    "ring": 0,
+    "label": "Wegwijzer",
+    "link": "wiki.html?page=wegwijzer",
+    "status": 0
+  },
+  {
+    "quadrant": 1, 
+    "ring": 0,
+    "label": "Reservations",
+    "link": "wiki.html?page=reservations",
+    "status": 0
+  },
+  {
+    "quadrant": 1, 
+    "ring": 1,
+    "label": "Verantwoordelijkheid",
+    "link": "wiki.html?page=verantwoordelijkheid",
+    "status": 0
+  },
+  {
+    "quadrant": 1, 
+    "ring": 1,
+    "label": "CleanupFest",
+    "link": "wiki.html?page=cleanupfest",
+    "status": 0
+  },
+  {
+    "quadrant": 1, 
+    "ring": 1,
+    "label": "Planet as a Stakeholder",
+    "link": "wiki.html?page=planetAsAStakeholder",
+    "status": 0
+  },
+  {
+    "quadrant": 1, 
+    "ring": 1,
+    "label": "Dualsimtelefoon",
+    "link": "wiki.html?page=dualsimtelefoon",
+    "status": 0
+  },
+  {
+    "quadrant": 1, 
+    "ring": 1,
+    "label": "Workbooks",
+    "link": "wiki.html?page=workbooks",
+    "status": 0
+  },
+  {
+    "quadrant": 1, 
+    "ring": 1,
+    "label": "Digital Cleanupday",
+    "link": "wiki.html?page=digitalCleanupDay",
+    "status": 0
+  },
+  {
+    "quadrant": 1, 
+    "ring": 2,
+    "label": "Reduce idle time",
+    "link": "wiki.html?page=reduceIdleTime",
+    "status": 0
+  },
+  {
+    "quadrant": 1, 
+    "ring": 2,
+    "label": "Certification",
+    "link": "wiki.html?page=certification",
+    "status": 0
+  },
+  {
+    "quadrant": 1, 
+    "ring": 2,
+    "label": "Manifesto",
+    "link": "wiki.html?page=manifesto",
+    "status": 0
+  },
+  {
+    "quadrant": 1, 
+    "ring": 2,
+    "label": "CO2Demand",
+    "link": "wiki.html?page=CO2Demand",
+    "status": 0
+  },
+  {
+    "quadrant": 1, 
+    "ring": 3,
+    "label": "Always-on",
+    "link": "wiki.html?page=alwayson",
+    "status": 0
+  },
+  {
+    "quadrant": 1, 
+    "ring": 3,
+    "label": "Videobellen",
+    "link": "wiki.html?page=videobellen",
+    "status": 0
+  },
+  {
+    "quadrant": 1, 
+    "ring": 3,
+    "label": "Archiveren",
+    "link": "wiki.html?page=archiveren",
+    "status": 0
+  }
+]

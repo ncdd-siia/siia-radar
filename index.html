@@ -1,0 +1,210 @@
+<!-- 
+The MIT License (MIT)
+
+Copyright (c) 2017 Zalando SE
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+Uitleg
+"quadrant": 0,    - 0,1,2,3 (tegen de klok in, begint rechtsonder)
+"ring": 0,        - 0,1,2,3 (start vanuit de binnenste ring)
+"label": "",      - labelnaam
+"link": "",       - link naar documentatie
+"active": true,   - zichtbaar ja of nee
+"status": ""      - onverander:0, nieuw:1, verplaats=2
+
+WiGo4IT Kleuren: 
+  Roze    : #BB4EAC
+  Groen   : #66D08F
+  Blauw   : #00116E
+  Oranje  : #E67968
+  Wigo4it groen: #005452
+ SIIA Kleuren: 
+  --kleur-achtergrond: #f2f8f6; 
+  --kleur-tekst: black; 
+  --kleur-doing: #007351; 
+  --kleur-ongoing: #66ab96; 
+  --kleur-planning: #9f7ba9; 
+  --kleur-undoing: #5f236f; 
+  
+  
+  
+  
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="description" content="SIIA Radar">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+<meta charset="UTF-8">
+
+<title>"  "</title>
+
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+<link rel="manifest" href="/icons/site.webmanifest">
+<link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="stylesheet" href="radar.css">
+
+<script type="text/javascript" src="https://js.monitor.azure.com/scripts/b/ext/ai.clck.2.min.js"></script>
+<script type="text/javascript">
+var clickPluginInstance = new Microsoft.ApplicationInsights.ClickAnalyticsPlugin();
+  // Click Analytics configuration
+var clickPluginConfig = {
+    autoCapture : true,
+    dataTags : {
+        customDataPrefix : 'data-custom-',
+        aiBlobAttributeTag : 'customblob',
+        parentDataTag : 'parent-group',
+        donotTrackDataTag : 'dnt',
+        captureAllMetaDataContent : true,
+        useDefaultContentNameOrId : true
+    }
+}
+// Application Insights configuration
+var configObj = {
+    connectionString: "InstrumentationKey=7954e6d3-c28e-4314-9a32-b1c36990eaaa;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/;ApplicationId=5719656a-4c41-4eb9-a992-adc536d704e9",
+    // Alternatively, you can pass in the instrumentation key,
+    // but support for instrumentation key ingestion will end on March 31, 2025.
+    // instrumentationKey: "YOUR INSTRUMENTATION KEY",
+    extensions: [
+        clickPluginInstance
+    ],
+    extensionConfig: {
+        [clickPluginInstance.identifier] : clickPluginConfig
+    },
+};
+// Application Insights JavaScript (Web) SDK Loader Script code
+!(function (cfg){function e(){cfg.onInit&&cfg.onInit(n)}var x,w,D,t,E,n,C=window,O=document,b=C.location,q="script",I="ingestionendpoint",L="disableExceptionTracking",j="ai.device.";"instrumentationKey"[x="toLowerCase"](),w="crossOrigin",D="POST",t="appInsightsSDK",E=cfg.name||"appInsights",(cfg.name||C[t])&&(C[t]=E),n=C[E]||function(g){var f=!1,m=!1,h={initialize:!0,queue:[],sv:"8",version:2,config:g};function v(e,t){var n={},i="Browser";function a(e){e=""+e;return 1===e.length?"0"+e:e}return n[j+"id"]=i[x](),n[j+"type"]=i,n["ai.operation.name"]=b&&b.pathname||"_unknown_",n["ai.internal.sdkVersion"]="javascript:snippet_"+(h.sv||h.version),{time:(i=new Date).getUTCFullYear()+"-"+a(1+i.getUTCMonth())+"-"+a(i.getUTCDate())+"T"+a(i.getUTCHours())+":"+a(i.getUTCMinutes())+":"+a(i.getUTCSeconds())+"."+(i.getUTCMilliseconds()/1e3).toFixed(3).slice(2,5)+"Z",iKey:e,name:"Microsoft.ApplicationInsights."+e.replace(/-/g,"")+"."+t,sampleRate:100,tags:n,data:{baseData:{ver:2}},ver:undefined,seq:"1",aiDataContract:undefined}}var n,i,t,a,y=-1,T=0,S=["js.monitor.azure.com","js.cdn.applicationinsights.io","js.cdn.monitor.azure.com","js0.cdn.applicationinsights.io","js0.cdn.monitor.azure.com","js2.cdn.applicationinsights.io","js2.cdn.monitor.azure.com","az416426.vo.msecnd.net"],o=g.url||cfg.src,r=function(){return s(o,null)};function s(d,t){if((n=navigator)&&(~(n=(n.userAgent||"").toLowerCase()).indexOf("msie")||~n.indexOf("trident/"))&&~d.indexOf("ai.3")&&(d=d.replace(/(\/)(ai\.3\.)([^\d]*)$/,function(e,t,n){return t+"ai.2"+n})),!1!==cfg.cr)for(var e=0;e<S.length;e++)if(0<d.indexOf(S[e])){y=e;break}var n,i=function(e){var a,t,n,i,o,r,s,c,u,l;h.queue=[],m||(0<=y&&T+1<S.length?(a=(y+T+1)%S.length,p(d.replace(/^(.*\/\/)([\w\.]*)(\/.*)$/,function(e,t,n,i){return t+S[a]+i})),T+=1):(f=m=!0,s=d,!0!==cfg.dle&&(c=(t=function(){var e,t={},n=g.connectionString;if(n)for(var i=n.split(";"),a=0;a<i.length;a++){var o=i[a].split("=");2===o.length&&(t[o[0][x]()]=o[1])}return t[I]||(e=(n=t.endpointsuffix)?t.location:null,t[I]="https://"+(e?e+".":"")+"dc."+(n||"services.visualstudio.com")),t}()).instrumentationkey||g.instrumentationKey||"",t=(t=(t=t[I])&&"/"===t.slice(-1)?t.slice(0,-1):t)?t+"/v2/track":g.endpointUrl,t=g.userOverrideEndpointUrl||t,(n=[]).push((i="SDK LOAD Failure: Failed to load Application Insights SDK script (See stack for details)",o=s,u=t,(l=(r=v(c,"Exception")).data).baseType="ExceptionData",l.baseData.exceptions=[{typeName:"SDKLoadFailed",message:i.replace(/\./g,"-"),hasFullStack:!1,stack:i+"\nSnippet failed to load ["+o+"] -- Telemetry is disabled\nHelp Link: https://go.microsoft.com/fwlink/?linkid=2128109\nHost: "+(b&&b.pathname||"_unknown_")+"\nEndpoint: "+u,parsedStack:[]}],r)),n.push((l=s,i=t,(u=(o=v(c,"Message")).data).baseType="MessageData",(r=u.baseData).message='AI (Internal): 99 message:"'+("SDK LOAD Failure: Failed to load Application Insights SDK script (See stack for details) ("+l+")").replace(/\"/g,"")+'"',r.properties={endpoint:i},o)),s=n,c=t,JSON&&((u=C.fetch)&&!cfg.useXhr?u(c,{method:D,body:JSON.stringify(s),mode:"cors"}):XMLHttpRequest&&((l=new XMLHttpRequest).open(D,c),l.setRequestHeader("Content-type","application/json"),l.send(JSON.stringify(s)))))))},a=function(e,t){m||setTimeout(function(){!t&&h.core||i()},500),f=!1},p=function(e){var n=O.createElement(q),e=(n.src=e,t&&(n.integrity=t),n.setAttribute("data-ai-name",E),cfg[w]);return!e&&""!==e||"undefined"==n[w]||(n[w]=e),n.onload=a,n.onerror=i,n.onreadystatechange=function(e,t){"loaded"!==n.readyState&&"complete"!==n.readyState||a(0,t)},cfg.ld&&cfg.ld<0?O.getElementsByTagName("head")[0].appendChild(n):setTimeout(function(){O.getElementsByTagName(q)[0].parentNode.appendChild(n)},cfg.ld||0),n};p(d)}cfg.sri&&(n=o.match(/^((http[s]?:\/\/.*\/)\w+(\.\d+){1,5})\.(([\w]+\.){0,2}js)$/))&&6===n.length?(d="".concat(n[1],".integrity.json"),i="@".concat(n[4]),l=window.fetch,t=function(e){if(!e.ext||!e.ext[i]||!e.ext[i].file)throw Error("Error Loading JSON response");var t=e.ext[i].integrity||null;s(o=n[2]+e.ext[i].file,t)},l&&!cfg.useXhr?l(d,{method:"GET",mode:"cors"}).then(function(e){return e.json()["catch"](function(){return{}})}).then(t)["catch"](r):XMLHttpRequest&&((a=new XMLHttpRequest).open("GET",d),a.onreadystatechange=function(){if(a.readyState===XMLHttpRequest.DONE)if(200===a.status)try{t(JSON.parse(a.responseText))}catch(e){r()}else r()},a.send())):o&&r();try{h.cookie=O.cookie}catch(k){}function e(e){for(;e.length;)!function(t){h[t]=function(){var e=arguments;f||h.queue.push(function(){h[t].apply(h,e)})}}(e.pop())}var c,u,l="track",d="TrackPage",p="TrackEvent",l=(e([l+"Event",l+"PageView",l+"Exception",l+"Trace",l+"DependencyData",l+"Metric",l+"PageViewPerformance","start"+d,"stop"+d,"start"+p,"stop"+p,"addTelemetryInitializer","setAuthenticatedUserContext","clearAuthenticatedUserContext","flush"]),h.SeverityLevel={Verbose:0,Information:1,Warning:2,Error:3,Critical:4},(g.extensionConfig||{}).ApplicationInsightsAnalytics||{});return!0!==g[L]&&!0!==l[L]&&(e(["_"+(c="onerror")]),u=C[c],C[c]=function(e,t,n,i,a){var o=u&&u(e,t,n,i,a);return!0!==o&&h["_"+c]({message:e,url:t,lineNumber:n,columnNumber:i,error:a,evt:C.event}),o},g.autoExceptionInstrumented=!0),h}(cfg.cfg),(C[E]=n).queue&&0===n.queue.length?(n.queue.push(e),n.trackPageView({})):e();})({                
+  src: "https://js.monitor.azure.com/scripts/b/ai.3.gbl.min.js",
+  crossOrigin: "anonymous",
+  // sri: false, // Custom optional value to specify whether fetching the snippet from integrity file and do integrity check
+  cfg: configObj // configObj is defined above.
+});
+</script>
+
+</head>
+
+<body>
+
+<div class="center-box" data-custom-parentid="Duurzaamheidsradar">
+  <a href="https://www.siia.coalitieduurzamedigitalisering.nl">
+    <img src="SIIA_logo.jpg" alt="SIIA logo">
+  </a>
+  <h1></h1>
+</div>
+
+<svg id="radar" style="display: block; margin: auto"></svg>
+
+<div class="center-box">
+  <div class="column">
+    <h3>Wat is de SIIA-radar</h3>
+    <p>
+    De <em>Sustainable IT Impact Assessment Radar</em>, de SIIA-Radar, is onderdeel van het </a href="https://siia.coalitieduurzamedigitalisering.nl">Sustainable IT Impact Assessment</a> van de <a href="https://www.coalitieduurzamedigitalisering.nl">Nederlandse Coalitie Duurzame Digitalisering</a>
+    </p>
+    <p>
+      De SIIA-Radar bevat een lijst van activiteiten om de IT te verduurzamen en de processen in de organisatie die de IT ondersteunt. De activiteiten worden geplaatst in een <em>ring</em>. Er zijn vier ringen met de volgende karakteristieken:
+    </p>
+    <ul>
+    <li><strong style="color: var(--kleur-doing)">DOING</strong> &mdash; Dit zien we graag en hebben we doorgevoerd.</li>
+    <li><strong style="color: var(--kleur-ongoing)">ONGOING</strong> &mdash; Hier zijn we mee bezig en <em>willen</em> we overal gaan doorvoeren. </li>
+    <li><strong style="color: var(--kleur-planning)">PLANNING</strong> &mdash; Dit onderzoeken we en <em>kan</em> interessant zijn.  </li>
+    <li><strong style="color: var(--kleur-undoing)">UNDOING</strong> &mdash; Dit is verleden tijd en kan <em>écht</em> niet meer.</li>
+    </ul>
+  
+    <h3>Wat is het doel?</h3>
+    <p>
+    De SIIA-radar is bedoeld om organisaties te helpen om de IT zo in te richten dat die  helpt om te verduurzamen en de IT zelf te verduurzamen.
+    </p>
+    <p>
+    De SIIA-radar geeft een overzicht van de activiteiten die daarvoor nodig zijn en de prioriteiten daarin. Het helpt om alignment te creëren binnen organisatie rondom het thema duurzaamheid. 
+    </p>
+    <p>
+    De activiteiten staan in 4 kwadranten: 
+    <ul>
+    <li>verduurzamen van de <strong>organisatie</strong>: business-model, doelen en strategie</li>
+    <li>verduurzamen van de <strong>IT</strong></li>
+    <li>verduurzamen van de <strong>processen</strong> in de organisatie</li>
+    <li>verduurzamen van de <strong>werkvloer</strong>: alles wat nodig is om het (IT-)werk  te kunnen doen. Zoals: reizen, telefoon en laptop, eten en drinken, gebouw en meubilair, verwarming en verlichting, thuiswerken. </li>
+   </ul>
+    </p>
+    <h3>Waar komt de informatie in de radar vandaan?</h3>
+    <p>
+    De items in deze radar zijn afkomstig  van de duurzaamheidsradar van <a href="https://www.duurzaamheidsradar.wigo4it.nl">WiGo4IT</a>, die intern al een aantal jaren de analyse heeft gedaan hoe ze moeten verduurzamen. 
+    </p>
+    <p>
+    WiGo4IT is een dienstverlener, in 2004 opgericht door gemeenten, om mensen van uitkeringen te voorzien. Per maand doet WiGo4IT meer dan 100.000 betalingen en in al die jaren is dat altijd precies op tijd gelukt. De organisatie telt zo'n 70 medewerkers. De werkcultuur van WiGo4IT is in de duurzaamheidsradar terug te vinden: het is een organisatie die de nadruk legt op autonomie en eigen verantwoordelijkheid. En veel van de activiteiten helpen de eigen medewerkers, maar ook hun klanten, de gemeenten, om die verantwoordelijkheid voor duurzaamheid te nemen.
+    </p>
+    </div>
+    <div class="column">
+    
+    <h3>Wie bepaalt de prioriteiten in de radar?</h3>
+    <p>
+      De inhoud van de SIIA-radar wordt vastgesteld door de personen die verantwoordelijk zijn voor het verduurzamen van de organisatie. In een agile werkende organisatie zullen dat de Sustainable Champions zijn. Het is de bedoeling dat teamleden in gesprek gaan als er iets verkeerd of niet op staat.
+      
+      Om de SIIA-radar te vullen kunnen drie routes worden bewandeld:
+        <ul>
+        <li>Je hebt  ideeën om de IT en de processen die de IT ondersteunt te verduurzamen: bijvoorbeeld het energieverbruik te verminderen, de GHG emissies te verlagen, de milieu- en sociale impact van de IT te verminderen door apparatuur te verminderen. Kijk dan in hoofdstuk <strong>'Doe'</strong> van de SIIA. Je gaat dan onderzoeken waar jullie staan wat duurzaamheid van IT en de processen die de IT ondersteunt, waar je naar toe wilt wat duurzaamheid betreft en wat daarvoor moet gebeuren. Van daaruit ga je kijken wat nodig is om de IT betrouwbaar, flexibel en veilig te houden als je aan de slag gaat met verduurzamen. Kijk daarvoor in het hoofdstuk <strong>'Organiseer'</strong>. 
+        Bij de verduurzaming komen waarschijnlijk nieuwe vragen op: is er behoefte aan de organisatie in een verduurzamende samenleving en economie? Hoe zorg je dat klanten graag zaken met je doen, als je verduurzaamt? Hoe belangrijk is verduurzaming om medewerkers aan te trekken, voor financiers of andere belanghebbenden. Kijk voor deze vragen in het hoofdstuk <strong>'Denk' </strong></li>
+        <li>De organisatie waar je werkt wil verduurzamen en jij bent verantwoordelijk voor de IT en de duurzaamheid daarvan. Hoe breng je in kaart welke IT nodig is, om de verduurzamende organisatie te ondersteunen. Misschien is de IT belemmerend en zijn veranderingen noodzakelijk. Kijk dan in het hoofdstuk <strong>'Organiseer'van de SIIA</strong></li>
+        <li>Je bent verantwoordelijk om de organisatie te verduurzamen en je wilt je daar daar over kunnen verantwoorden. Misschien om morele redenen, om juridische redenen (de Europese CSRD, de Corporate Governance Code) of omdat je afnemers of toeleveranciers dat van je vragen. Je vraagt je af waar je moet beginnen: moet het businessmodel aangepast, de strategie, wat moet er dan allemaal veranderen in de organisatie? Begin dan in het hoofdstuk <strong>'Denk'</strong> van de SIIA</li>
+        <li>Je bent verantwoordelijk voor de rapportage naar klanten en andere belanghebbenden (toezichthouders, financiers, bestuurders) over de verduurzaming van de organisatie. De SIIA loopt alle hoofdstukken door van de rapportage. Te beginnen met het onderzoek naar de impact op duurzaamheid van de organisatie en wat de kansen en bedreigingen zijn als de economie en samenleving verduurzaamt. Dan de aanpassingen die nodig zijn en de risico's en onzekerheden die de transformatie naar duurzaamheid hinderen en hoe die worden beheerst. Vervolgens gaat de SIIA in op de eisen die aan de IT gesteld moeten worden om deze transitie te verduurzamen te ondersteunen en daarbij zelf duurzaam, veilig, betrouwbaar en flexibel te blijven. Tenslotte laat de SIIA verschillende best practices zien om aspecten van de organisatie te verduurzamen: de inkoop, het energieverbruik, de emissies enz.</li>
+        </ul>      
+    </p>
+    <p>
+      Vorige versies kan je hier vinden: <a href="changelog.html">Changelog</a>
+    </p>
+    <p>
+      <em>Gebaseerd op: <a href="https://duurzaamheidsradar.wigo4it.nl">WiGo4IT Duurzaamheidsradar</a> & <a href="https://www.thoughtworks.com/radar">ThoughtWorks</a> & <a href="https://github.com/zalando/tech-radar"> Zalando TechRadar</a></em>
+    </p>
+  </div>
+</div>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="radar.js"></script>
+<script>
+  fetch("/versions/versions.json")
+    .then(response => response.json())
+    .then(data => {
+      data.sort((a, b) => a.version < b.version ? 1 : -1);
+      
+      // haal versie uit evt. query params of anders de meest recente versie
+      const searchParams = new URLSearchParams(window.location.search);
+      let versionString = searchParams.get('version');
+      if (!data.some(d => d.version === versionString)) {
+        versionString = data[0].version;
+      }
+
+      const versionData = data.find(d => d.version === versionString);
+
+      const config = {
+        title: versionData.title
+      };
+
+      fetch(`/versions/${versionString}.json`)
+        .then(response => response.json())
+        .then(entries => {
+          config.entries = entries;
+          radar_visualization(config);
+        });
+    });
+</script>
+
+</body>
+</html>
