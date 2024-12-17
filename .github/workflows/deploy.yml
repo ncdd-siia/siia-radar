@@ -1,0 +1,18 @@
+name: Auto Pull to Server
+
+on:
+  push:
+    branches:
+      - main # Trigger op pushes naar de main branch
+
+jobs:
+  deploy:
+    runs-on: self-hosted # Gebruik de self-hosted runner
+
+    steps:
+      - name: Pull repository op server
+        run: |
+          cd data/sites/web/coalitieduurzamedigitaliseringnl/subsites/radar.coalitieduurzamedigitalisering.nl
+          git fetch --all
+          git reset --hard origin/main
+          git pull origin main
