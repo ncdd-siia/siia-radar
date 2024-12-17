@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="description" content="SIIA Duurzaamheidsradar: De radar voor duurzaam bewustzijn.">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <meta charset="UTF-8">
+
+    <title>SIIA Duurzaamheidsradar</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="manifest" href="/icons/site.webmanifest">
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="wiki.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const params = new URLSearchParams(window.location.search);
+            const wikiKey = params.get('page');
+            if (wikiKey) {
+                const markdownFile = `wiki/${wikiKey}.md`; // Voeg .md toe aan de wikiKey
+
+                fetch(markdownFile)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text();
+                    })
+                    .then(markdown => {
+                        const firstLine = markdown.split('\n')[0];
+                        const pageTitle = firstLine.replace('# ', '');
+                        document.title = pageTitle;
+
+                        const htmlContent = marked.parse(markdown);
+                        document.getElementById('wiki-container').innerHTML = htmlContent;
+
+                        addAnchorsToHeadings();  // Voeg anchors toe aan headings
+                        generateTOC();  // Genereer de TOC
+                    })
+                    .catch(error => {
+                        console.error('Error fetching the markdown file:', error);
+                    });
+            } else {
+                document.getElementById('wiki-container').innerHTML = 'No wiki entry specified.';
+            }
+
+            // Functie om unieke anchors toe te voegen aan alle headings
+            function addAnchorsToHeadings() {
+                const headings = document.querySelectorAll('#wiki-container h1, #wiki-container h2, #wiki-container h3, #wiki-container h4, #wiki-container h5, #wiki-container h6');
+                headings.forEach(heading => {
+                    const text = heading.innerText;
+                    if (text) {
+                        const anchor = text.toLowerCase().replace(/[^\w]+/g, '-');
+                        heading.id = anchor;
+                    }
+                });
+            }
+
+            // Functie om een TOC te genereren op basis van unieke IDs van headings
+            function generateTOC() {
+                const tocContainer = document.getElementById('toc-container');
+                tocContainer.innerHTML = '<h2>Inhoudsopgave</h2><ul></ul>';
+                
+                const ul = tocContainer.querySelector('ul');
+                const headings = document.querySelectorAll('#wiki-container h1, #wiki-container h2, #wiki-container h3, #wiki-container h4, #wiki-container h5, #wiki-container h6');
+                
+                headings.forEach(heading => {
+                    const text = heading.innerText;
+                    const id = heading.id;
+
+                    if (id && text) {
+                        const li = document.createElement('li');
+                        const link = document.createElement('a');
+                        link.href = `#${id}`;
+                        link.textContent = text;
+                        link.textContent = `- ${text}`;
+                        li.appendChild(link);
+                        ul.appendChild(li);
+                    }
+                });
+            }
+        });
+    </script>
+
+<style>
+    header {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 10px;
+    }
+    header img {
+        height: 50px;
+    }
+    body {
+        padding-top: 70px; /* Om ruimte te maken voor het logo */
+    }
+</style>
+</head>
+
+<body>
+<header>
+    <a href="https://radar.groenslimveilig.nl">
+        <img src="SIIA_logo.jpg" alt="SIIA Logo" style="height: 50px; margin: 10px;">
+    </a>
+</header>
+
+    <div id="toc-container"></div> <!-- TOC-container voor de inhoudsopgave -->
+    <div id="wiki-container"></div>
+</body>
+
+</html>

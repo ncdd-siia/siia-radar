@@ -1,7 +1,7 @@
 {
-  "name": "duurzaamheidsradar",
-  "version": "1.0.0",
-  "description": "Welkom bij de [duurzaamheidsradar](https://duurzaamheidsradar.wigo4it.nl) van Wigo4it! Deze radar is geïnspireerd door de Thoughtworks & Zalando Radar en heeft als doel om onze huidige positie als organisatie op het gebied van duurzaamheid inzichtelijk te maken en tegelijkertijd bewustwording te creëren.",
+  "name": "SIIA Duurzaamheidsradar",
+  "version": "0.0.8",
+  "description": "Welkom bij de [duurzaamheidsradar](https://radar.coalitieduurzamedigitalisering.nl/). Het is onderdeel van [Sustainable Impact Assessment](https://coalitieduurzamedigitalisering.nl/sustainable-it-impact-assessment-siia/), een handreiking van de Nederlandse Coalitie Duurzame Digitalisering om IT en organisatie te verduurzamen! Deze radar is geïnspireerd door het werk van [WiGo4IT](https://www.wigo4it.nl): zij werken al een aantal jaar om hun IT te verduurzamen en duurzamer te werken. De technische basis voor de radar is gelegd door Thoughtworks & Zalando Radar. Organisaties kunnen de radar gebruiken om hun positie op het gebied van duurzaamheid inzichtelijk te maken en tegelijkertijd bewustwording te creëren. Achtergrond informatie bij de radar is  te vinden op de [wiki](https://wiki.coalitieduurzamedigitalisering.nl)",
   "main": "radar.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
