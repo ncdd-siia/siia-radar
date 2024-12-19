@@ -200,10 +200,171 @@ function radar_visualization(config) {
     }
   }
 
+
+
+  let filterActive = false; // Houd bij of de filter actief is
+
+ 
+  // Helper functies
   function translate(x, y) {
     return "translate(" + x + "," + y + ")";
   }
 
+  // Functies voor button gedrag
+  
+  function createFilterButton(x, y, text, groupFilters) {
+    var button = radar.append("g")
+      .attr("class", "button")
+      .attr("transform", translate(x, y))
+      .style("cursor", "pointer");
+  
+    button.append("rect")
+      .attr("width", 200)
+      .attr("height", 16)
+      .attr("rx", 5)
+      .attr("ry", 5)
+      .style("fill", config.colors.text)
+      .style("stroke", config.colors.grid)
+      .style("stroke-width", 2);
+  
+    var label = button.append("text")
+      .text(text)
+      .attr("x", 10)
+      .attr("y", 8)
+      .attr("text-anchor", "start")
+      .attr("alignment-baseline", "middle")
+      .style("fill", config.colors.background)
+      .style("font-size", "16px")
+      .style("font-weight", "bold");
+
+    // Voeg het "lees meer" icoon toe (SVG-path)
+    button.append("path")
+      .attr("d", "M2 2 L10 2 L10 8 L14 4 L10 0 L10 2 L2 2") // Opengeslagen boek path
+      .attr("transform", translate(210, 4)) // Plaats het icoon rechts achter de button
+      .style("fill", config.colors.text)
+      .style("stroke", config.colors.grid)
+      .style("stroke-width", 1);
+  
+    var dropdown = button.append("g")
+      .attr("class", "dropdown")
+      .attr("transform", translate(0, 20))
+      .style("display", "none");
+  
+    groupFilters.forEach((filter, index) => {
+      const option = dropdown.append("g")
+        .attr("transform", translate(0, index * 20))
+        .style("cursor", "pointer");
+  
+      option.append("rect")
+        .attr("width", 200)
+        .attr("height", 20)
+        .style("fill", config.colors.text)
+        .style("stroke", config.colors.grid)
+        .style("stroke-width", 1);
+  
+      option.append("text")
+        .text(filter.label)
+        .attr("x", 10)
+        .attr("y", 14)
+        .attr("text-anchor", "start")
+        .attr("alignment-baseline", "middle")
+        .style("fill", "white")
+        .style("font-size", "14px");
+  
+      option.on("click", function () {
+        d3.event.stopPropagation(); // Voorkom dat body-click event triggert
+        dropdown.style("display", "none"); // Sluit dropdown
+        label.text(filter.label).attr("x", 10).attr("text-anchor", "start");
+        
+        clickButton(filter.value);
+      });
+    });
+  
+    button.on("click", function () {
+      d3.event.stopPropagation();
+      const isVisible = dropdown.style("display") === "block";
+    
+      // Controleer of er een filter actief is
+      if (filterActive) {
+        label.text("Filter").attr("x", 10).attr("text-anchor", "start");
+        clickButton(null); // Hef het filter op
+        filterActive = false; // Zet de filter status terug
+        dropdown.style("display", "none");
+      } else {
+        dropdown.style("display", isVisible ? "none" : "block");
+      }
+    });
+    
+  
+    d3.select("body").on("click", function () {
+      if (!d3.event.target.closest(".button")) {
+        d3.selectAll(".dropdown").style("display", "none");
+      }
+    });
+  }
+  
+  
+
+
+  function highlightButton(button) {
+    d3.select(button).select("rect")
+      .style("fill", config.colors.doing); // Verander kleur bij hover
+  }
+
+  function unhighlightButton(button) {
+    d3.select(button).select("rect")
+      .style("fill", config.colors.text); // Herstel naar standaardkleur
+  }
+
+  function clickButton(groupFilter) {
+    console.log("Filter button clicked for group: " + groupFilter);
+  
+    if (filterActive) {
+      // Reset de originele staat
+      d3.selectAll(".blip").each(function (d) {
+        d3.select(this).select("circle")
+          .style("fill", d.color)
+          .style("stroke", "none")
+          .style("stroke-width", 0);
+  
+        d3.select(this).select("text")
+          .style("fill", d.textColor);
+  
+        // Verwijder onderstreping van legenda-items
+        d3.select("#legendItem" + d.id)
+          .style("text-decoration", "none");
+      });
+      filterActive = false;
+    } else {
+      // Highlight blips en pas legenda-items aan
+      d3.selectAll(".blip").each(function (d) {
+        if (d.group === groupFilter) {
+          // Pas de stijl van de blip aan
+          d3.select(this).select("circle")
+            .style("fill", config.colors.background)
+            .style("stroke", d.color)
+            .style("stroke-width", 2);
+  
+          // Maak de tekst (cijfers) zwart
+          d3.select(this).select("text")
+            .style("fill", "black");
+  
+          // Voeg onderstreping toe aan corresponderend legenda-item
+          d3.select("#legendItem" + d.id)
+            .style("font-weight", "bold")
+            //.style("fill", config.colors.background)
+            .style("background-color", "black")
+            .style("padding", "2px 4px"); // Voeg wat padding toe voor de achtergro
+            //legendItem.setAttribute("filter", "url(#solid)");
+            //legendItem.setAttribute("fill", config.colors.background);
+        }
+      });
+      filterActive = true;
+    }
+  }
+  
+      
+  
 
   var svg = d3.select("svg#" + config.svg_id)
     .style("background-color", config.colors.background)
@@ -268,7 +429,7 @@ function radar_visualization(config) {
 
   function legend_transform(quadrant, ring, index=null) {
     var dx = ring < 2 ? 0 : 150; // ruimte tussen de legenda's
-    var dy = (index == null ? -16 : index * 12);
+    var dy = (index == null ? 0 : 16 + index * 12); //-16
     if (ring % 2 === 1) {
       dy = dy + 36 + segmented[quadrant][ring-1].length * 12;
     }
@@ -315,6 +476,14 @@ function radar_visualization(config) {
         .style("font-size", "20px")
         .style("font-weight", "900")
         .style("fill", config.colors.text_legend);
+      
+      createFilterButton(
+        legend_offset[quadrant].x,
+        legend_offset[quadrant].y - 38, // Place the button just below the title
+        "Filter",
+        config.quadrantGroups[quadrant].map(group => ({ label: group, value: group }))
+      );
+
       for (var ring = 0; ring < 4; ring++) {
         legend.append("text")
           .attr("transform", legend_transform(quadrant, ring))
@@ -448,13 +617,20 @@ function radar_visualization(config) {
     var blip = d3.select(this);
 
     // blip link
-    if (d.active && d.hasOwnProperty("link") && d.link) {
-      blip = blip.append("a")
-        .attr("xlink:href", d.link);
+    //if (d.active && d.hasOwnProperty("link") && d.link) {
+    //  blip = blip.append("a")
+    //    .attr("xlink:href", d.link);
 
-      if (config.links_in_new_tabs) {
-        blip.attr("target", "_blank");
-      }
+    //  if (config.links_in_new_tabs) {
+    //    blip.attr("target", "_blank");
+    //  }
+    //}
+    // Blip link functionaliteit
+    if (d.hasOwnProperty("link") && d.link) {
+      blip.style("cursor", "pointer") // Zorg voor een pointer cursor bij hover
+        .on("click", function() {
+          window.open(d.link, "_blank"); // Open de link in een nieuw tabblad
+      });
     }
 
     // blip shape
