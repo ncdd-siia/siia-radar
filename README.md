@@ -26,5 +26,5 @@ De software wordt geleverd “zoals hij is”, zonder enige garanties. Als je en
 
 Geniet van de duurzaamheidsradar en laten we samen de wereld een beetje groener maken!
 
-*Deze radar is gebaseerd op de Duurzaamheidsradar van [WiGo4IT](https://www.wigo4it.nl) en de [httpsTechRadar van [ThoughtWorks](https://www.thoughtworks.com/radar) en [Zalando](https://github.com/zalando/tech-radar). Bedankt voor hun inspiratie en geweldige werk!*
+*Deze radar is gebaseerd op de Duurzaamheidsradar van [WiGo4IT](https://www.wigo4it.nl) en de [TechRadar van [ThoughtWorks](https://www.thoughtworks.com/radar) en [Zalando](https://github.com/zalando/tech-radar). Bedankt voor hun inspiratie en geweldige werk!*
 =======
