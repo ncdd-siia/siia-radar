@@ -80,14 +80,17 @@ function radar_visualization(config) {
     { x: -675, y: -440 };
 
   const footer_offset =
-    { x: -675, y: 420 };
+    { x: 450, y: 420 };
 
   const legend_offset = [
-    { x: 450, y: 90 }, //rechsonder
+    { x: 450, y: 90 }, //rechtsonder
     { x: -675, y: 90 }, //linksonder
     { x: -675, y: -310 }, //linksboven
     { x: 450, y: -310 } //rechtsboven
   ];
+
+  const filter_offset =
+    { x: -675, y: 390 };
 
   function polar(cartesian) {
     var x = cartesian.x;
