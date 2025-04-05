@@ -17,7 +17,7 @@ function radar_visualization(config) {
   const style = getComputedStyle(document.documentElement);
 
   config.svg_id = "radar";
-  config.width = 1450;
+  config.width = 1700;//was 1450
   config.height = 900;
   config.colors = {
     background: style.getPropertyValue('--kleur-achtergrond'),
@@ -71,11 +71,18 @@ function radar_visualization(config) {
     { radial_min: -0.5, radial_max: 0, factor_x: 1, factor_y: -1 } // rechtsonder
   ];
 
+  //const rings = [
+  //  { radius: 130 },
+  //  { radius: 220 },
+  //  { radius: 310 },
+  //  { radius: 400 }
+  //];
+
   const rings = [
-    { radius: 130 },
-    { radius: 220 },
-    { radius: 310 },
-    { radius: 400 }
+  { radius: 100 },
+  { radius: 170 },
+  { radius: 240 },
+  { radius: 300 }
   ];
 
   const title_offset =
@@ -86,13 +93,13 @@ function radar_visualization(config) {
 
   const legend_offset = [
     { x: 450, y: 30 }, //90 rechtsonder
-    { x: -675, y: 30 }, //90 linksonder
-    { x: -675, y: -310 }, //linksboven
+    { x: -800, y: 30 }, //-675 90 linksonder
+    { x: -800, y: -310 }, //linksboven
     { x: 450, y: -310 } //rechtsboven
   ];
 
   const filter_offset =
-    { x: -675, y: 245 };//390
+    { x: -820, y: 245 };//390
 
   const uniqueGroups = new Set(); //stores the unique values of the field "group"
   for (let i = 0; i < config.entries.length; i++) {
@@ -441,21 +448,25 @@ function radar_visualization(config) {
     .attr("height", config.height);
 
   var radar = svg.append("g");
-  radar.attr("transform", translate(config.width / 2, config.height / 2));
+  radar.attr("transform", translate(config.width / 2, config.height / 2 - 80));
 
   var grid = radar.append("g");
 
   // draw grid lines
+  const maxRadius = rings[3].radius;
+
   grid.append("line")
-    .attr("x1", 0).attr("y1", -400)
-    .attr("x2", 0).attr("y2", 400)
+    .attr("x1", 0).attr("y1", -maxRadius)
+    .attr("x2", 0).attr("y2", maxRadius)
     .style("stroke", config.colors.grid)
     .style("stroke-width", 2);
+
   grid.append("line")
-    .attr("x1", -400).attr("y1", 0)
-    .attr("x2", 400).attr("y2", 0)
+    .attr("x1", -maxRadius).attr("y1", 0)
+    .attr("x2", maxRadius).attr("y2", 0)
     .style("stroke", config.colors.grid)
     .style("stroke-width", 2);
+
 
   // background color. Usage `.attr("filter", "url(#solid)")`
   // SOURCE: https://stackoverflow.com/a/31013492/2609980
@@ -531,7 +542,11 @@ function radar_visualization(config) {
   }
 
   function legend_transform(quadrant, ring, index=null) {
-    var dx = ring < 2 ? 0 : 150; // ruimte tussen de legenda's
+    //var dx = ring < 2 ? 0 : 160; //-120 was 0 ruimte tussen de legenda's
+    const isLeft = quadrant === 1 || quadrant === 2;
+    const dx = ring < 2
+      ? 0
+      : (isLeft ? 260 : 160);
     var dy = (index == null ? 0 : 16 + index * 12); //-16
     if (ring % 2 === 1) {
       dy = dy + 36 + segmented[quadrant][ring-1].length * 12;
@@ -586,7 +601,17 @@ function radar_visualization(config) {
         segmented[quadrant][1].length) * 13 + 30;
 
       for (var ring = 0; ring < 4; ring++) {
-        const dx = ring < 2 ? 0 : 160; //was 160 180
+        //const isLeft = quadrant === 1 || quadrant === 2;
+        //const dx = ring < 2 ? 0 : (isLeft ? 260 : 160);
+        const isLeft = quadrant === 1 || quadrant === 2;
+        const isRight = quadrant === 0 || quadrant === 3;
+
+        const dx = ring < 2
+          ? (isRight ? -100 : 0)   // DOING/ONGOING → iets naar links als rechts
+          : (isLeft ? 260 : 160);  // PLANNING/UNDOING → verder weg als links
+
+
+        //const dx = ring < 2 ? 0 : 160; //was 160 180
         //const dy = ring < 2
         //  ? 0 // DOING & ONGOING (bovenste rij)
         //  : topRowHeight + 20; // PLANNING & UNDOING (onderste rij)
@@ -608,10 +633,45 @@ function radar_visualization(config) {
 
         const groupX = qx + dx;
         const groupY = qy + dy;
-        const cardWidth = 130; // was 320 - smallere breedte links en rechts consistent
+        const cardWidth = 220; // was 320 - smallere breedte links en rechts consistent
 
         const ringGroup = legend.append("g")
           .attr("transform", translate(groupX, groupY));
+        const headerHeight = 22; // hoogte van de bovenbalk
+        
+
+        //ringGroup.append("rect")
+        //  .attr("x", -20)
+        //  .attr("y", -10)
+        //  .attr("width", cardWidth)
+        //  .attr("height", headerHeight)
+        //  .attr("rx", 12)
+        //  .attr("ry", 12)
+        //  .style("fill", config.rings[ring].color)
+        //  .style("opacity", 0.95);
+        // Gekleurde bovenbalk met afgeronde bovenhoeken (en rechte onderkant)
+        const tabX = -20;
+        const tabY = -10;
+        const tabW = cardWidth;
+        const tabH = headerHeight;
+        const radius = 12;
+
+        const tabPath = `
+          M ${tabX + radius},${tabY} 
+          H ${tabX + tabW - radius} 
+          A ${radius},${radius} 0 0 1 ${tabX + tabW},${tabY + radius} 
+          V ${tabY + tabH} 
+          H ${tabX} 
+          V ${tabY + radius} 
+          A ${radius},${radius} 0 0 1 ${tabX + radius},${tabY} 
+          Z
+        `;
+
+        ringGroup.append("path")
+          .attr("d", tabPath)
+          .style("fill", config.rings[ring].color)
+          .style("opacity", 0.95);
+
 
         ringGroup.append("rect")
           .attr("x", -20)
@@ -630,7 +690,7 @@ function radar_visualization(config) {
           .attr("class", "legend-text")
           .style("font-size", "14px")
           .style("font-weight", "bold")
-          .style("fill", config.rings[ring].color);
+          .style("fill",config.colors.background );//config.rings[ring].color);
 
         ringGroup.selectAll(".legend" + quadrant + ring)
           .data(segmented[quadrant][ring])
@@ -653,131 +713,94 @@ function radar_visualization(config) {
       }
     }
     // Filterblok met titel "Filters"
+    
+        // Teken de witte card met titel en 2 kolommen filters
+    
+    // Teken de gekleurde header-tab en witte kaart
     var filtersLegend = radar.append("g")
       .attr("transform", translate(filter_offset.x, filter_offset.y));
 
+    const cardWidth = 400;
+    const cardHeight = 180;
+    const headerHeight = 22;
+    const radius = 12;
+
+    // Tabblad-header met afgeronde bovenhoeken en rechte onderkant
+    const tabPath = `
+      M ${radius},0 
+      H ${cardWidth - radius} 
+      A ${radius},${radius} 0 0 1 ${cardWidth},${radius} 
+      V ${headerHeight} 
+      H 0 
+      V ${radius} 
+      A ${radius},${radius} 0 0 1 ${radius},0 
+      Z
+    `;
+
+    filtersLegend.append("path")
+      .attr("d", tabPath)
+      .style("fill", config.colors.text_filter_legend)
+      .style("opacity", 0.95);
+
+    // Titeltekst in de gekleurde header
     filtersLegend.append("text")
       .text("Filters")
+      .attr("x", 12)
+      .attr("y", 15)
       .attr("class", "legend-text")
-      .style("font-size", "20px")
-      .style("font-weight", "900")
-      .style("fill", config.colors.text_legend)
-      .attr("text-anchor", "start");
+      .style("font-size", "14px")
+      .style("font-weight", "bold")
+      .style("fill", config.colors.background);
 
-    const columnSpacing = 250; //160
-    const rowSpacing = 15; //20
-    const half = Math.ceil(config.uniqueGroups.length / 2);
+    // Witte body van de kaart
+    filtersLegend.append("rect")
+      .attr("y", 0)
+      .attr("width", cardWidth)
+      .attr("height", cardHeight)
+      .attr("rx", 12)
+      .attr("ry", 12)
+      .style("fill", "#ffffff")
+      .style("filter", "drop-shadow(0px 2px 4px rgba(0,0,0,0.15))")
+      .lower(); // zet 'm onder het tabblad
 
+    // Kolominstellingen
+    const leftColumnX = 20;
+    const rightColumnX = 278;
+    const rowSpacing = 20;
     let currentFilter = null;
 
     config.uniqueGroups.forEach((group, index) => {
-      const col = index < half ? 0 : 1;
-      const row = index < half ? index : index - half;
-
-      const x = col * columnSpacing;
-      const y = 30 + row * rowSpacing;
+      const isLeft = index < 5;
+      const colX = isLeft ? leftColumnX : rightColumnX;
+      const row = isLeft ? index : index - 5;
+      const y = 50 + row * rowSpacing;
 
       const groupItem = filtersLegend.append("g")
-        .attr("transform", translate(x, y))
+        .attr("transform", translate(colX, y))
         .style("cursor", "pointer")
         .on("click", function () {
           const wasActive = currentFilter === group;
-
-          // Zet filter aan of uit
           currentFilter = wasActive ? null : group;
           clickButton(currentFilter);
-
-          // Update vetgedrukte status van álle filterlabels
           filtersLegend.selectAll("text.filter-label")
             .style("font-weight", d => (d === currentFilter ? "bold" : "normal"));
         });
 
-
-      // Haal status en kleur op
       const status = config.groupToStatus[group] || 1;
-      const color = "Gray"//config.rings[0].color;
+      const color = config.colors.text_filter_legend; // 👈 nu in juiste kleur
 
-      // Voeg vorm toe (zelfde logica als blip status)
-
+      // Vormpje
       function drawShape(status, color, parent) {
-        if (status === 1) { // filled circle
-          parent.append("circle")
-            .attr("r", 5)
-            .attr("fill", color);
-        } else if (status === 2) { // filled triangle
-          parent.append("path")
-            .attr("d", "M -6,4 6,4 0,-7 z")
-            .attr("fill", color);
-        } else if (status === 3) { // filled square
-          parent.append("rect")
-            .attr("x", -5)
-            .attr("y", -5)
-            .attr("width", 10)
-            .attr("height", 10)
-            .attr("fill", color);
-        } else if (status === 4) { // filled ellipse
-          parent.append("ellipse")
-            .attr("rx", 5)
-            .attr("ry", 3)
-            .attr("fill", color);
-        } else if (status === 5) { // filled pentagon
-          parent.append("path")
-            .attr("d", "M 0,-6 L 5,-2 L 3,5 L -3,5 L -5,-2 Z")
-            .attr("fill", color);
-        } else if (status === 6) { // filled star
-          parent.append("path")
-            .attr("d", "M0,-6 L2,-2 L6,-2 L3,1 L4,5 L0,3 L-4,5 L-3,1 L-6,-2 L-2,-2 Z")
-            .attr("fill", color);
-        } else if (status === 7) { // open circle
-          parent.append("circle")
-            .attr("r", 5)
-            .attr("fill", "none")
-            .attr("stroke", color)
-            .attr("stroke-width", 1.5);
-        } else if (status === 8) { // open triangle
-          parent.append("path")
-            .attr("d", "M -6,4 6,4 0,-7 z")
-            .attr("fill", "none")
-            .attr("stroke", color)
-            .attr("stroke-width", 1.5);
-        } else if (status === 9) { // open square
-          parent.append("rect")
-            .attr("x", -5)
-            .attr("y", -5)
-            .attr("width", 10)
-            .attr("height", 10)
-            .attr("fill", "none")
-            .attr("stroke", color)
-            .attr("stroke-width", 1.5);
-        } else if (status === 10) { // open ellipse
-          parent.append("ellipse")
-            .attr("rx", 5)
-            .attr("ry", 3)
-            .attr("fill", "none")
-            .attr("stroke", color)
-            .attr("stroke-width", 1.5);
-        } else if (status === 11) { // open pentagon
-          parent.append("path")
-            .attr("d", "M 0,-6 L 5,-2 L 3,5 L -3,5 L -5,-2 Z")
-            .attr("fill", "none")
-            .attr("stroke", color)
-            .attr("stroke-width", 1.5);
-        } else if (status === 12) { // open star
-          parent.append("path")
-            .attr("d", "M0,-6 L2,-2 L6,-2 L3,1 L4,5 L0,3 L-4,5 L-3,1 L-6,-2 L-2,-2 Z")
-            .attr("fill", "none")
-            .attr("stroke", color)
-            .attr("stroke-width", 1.5);
-        } else { // fallback
-          parent.append("circle")
-            .attr("r", 5)
-            .attr("fill", color);
+        if (status === 1) {
+          parent.append("circle").attr("r", 5).attr("fill", color);
+        } else {
+          parent.append("rect").attr("x", -5).attr("y", -5).attr("width", 10).attr("height", 10).attr("fill", color);
         }
       }
 
-
       drawShape(status, color, groupItem);
 
+      // Label
       groupItem.append("text")
         .text(group)
         .attr("x", 12)
@@ -785,8 +808,10 @@ function radar_visualization(config) {
         .attr("class", "legend-text filter-label")
         .datum(group)
         .style("font-size", "13px")
-        .style("fill", config.colors.text);
+        .style("fill", config.colors.text_filter_legend); // 👈 juiste kleur
     });
+
+
 
   }
 
