@@ -29,7 +29,7 @@
         "quadrant": 3,
         "urgentie": 60.0,
         "radarcat": "Precies genoeg",
-        "group": "1. Precies genoeg hardware, energie",
+        "group": "1. Minder Hardware",
         "title": "# Right Size Provisioning"
     },
     {
@@ -62,7 +62,7 @@
         "quadrant": 3,
         "urgentie": 45.0,
         "radarcat": "Precies genoeg",
-        "group": "1. Precies genoeg hardware, energie",
+        "group": "1. Minder Hardware",
         "title": "# Containerization"
     },
     {
@@ -84,7 +84,7 @@
         "quadrant": 0,
         "urgentie": 40.0,
         "radarcat": "Duurzamee functionaliteit",
-        "group": "5. Softw",
+        "group": "5. Software",
         "title": "# Berichtenbox"
     },
     {
@@ -106,7 +106,7 @@
         "quadrant": 3,
         "urgentie": 30.0,
         "radarcat": "Duurzaam Gebruik",
-        "group": "4. Minder energie door beter gebruik",
+        "group": "4. Minder Gebruik",
         "title": "# Self-service"
     },
     {
@@ -117,7 +117,7 @@
         "quadrant": 0,
         "urgentie": 18.0,
         "radarcat": "Duurzamee functionaliteit",
-        "group": "5. Softw",
+        "group": "5. Software",
         "title": "# Algoritme"
     },
     {
@@ -128,7 +128,7 @@
         "quadrant": 3,
         "urgentie": 18.0,
         "radarcat": "Duurzaam Gebruik",
-        "group": "1. Precies genoeg hardware, energie",
+        "group": "1. Minder Hardware",
         "title": "# Realtime Dashboards"
     },
     {
@@ -172,7 +172,7 @@
         "quadrant": 0,
         "urgentie": 18.0,
         "radarcat": "Duurzamee functionaliteit",
-        "group": "5. Softw",
+        "group": "5. Software",
         "title": "# Python"
     },
     {
@@ -194,7 +194,7 @@
         "quadrant": 3,
         "urgentie": 75.0,
         "radarcat": "Precies genoeg",
-        "group": "1. Precies genoeg hardware, energie",
+        "group": "1. Minder Hardware",
         "title": "# Duurzaamheid met On-Demand Resources"
     },
     {
@@ -238,7 +238,7 @@
         "quadrant": 3,
         "urgentie": 30.0,
         "radarcat": "Precies genoeg",
-        "group": "1. Precies genoeg hardware, energie",
+        "group": "1. Minder Hardware",
         "title": "# Terracost"
     },
     {
@@ -249,7 +249,7 @@
         "quadrant": 3,
         "urgentie": 30.0,
         "radarcat": "Duurzaam Gebruik",
-        "group": "4. Minder energie door beter gebruik",
+        "group": "4. Minder Gebruik",
         "title": "# Wegwijzer"
     },
     {
@@ -260,7 +260,7 @@
         "quadrant": 0,
         "urgentie": 24.0,
         "radarcat": "Duurzaam Gebruik",
-        "group": "4. Minder energie door beter gebruik",
+        "group": "4. Minder Gebruik",
         "title": "# Reservations"
     },
     {
@@ -271,7 +271,7 @@
         "quadrant": 0,
         "urgentie": 24.0,
         "radarcat": "Duurzaam Gebruik",
-        "group": "4. Minder energie door beter gebruik",
+        "group": "4. Minder Gebruik",
         "title": "# Workbooks"
     },
     {
@@ -359,7 +359,7 @@
         "quadrant": 3,
         "urgentie": 75.0,
         "radarcat": "Precies genoeg",
-        "group": "1. Precies genoeg hardware, energie",
+        "group": "1. Minder Hardware",
         "title": "# Infrastructure as Code"
     },
     {
@@ -370,7 +370,7 @@
         "quadrant": 3,
         "urgentie": 75.0,
         "radarcat": "Precies genoeg",
-        "group": "1. Precies genoeg hardware, energie",
+        "group": "1. Minder Hardware",
         "title": "# Infrastructure as a Service"
     },
     {
@@ -381,7 +381,7 @@
         "quadrant": 3,
         "urgentie": 75.0,
         "radarcat": "Precies genoeg",
-        "group": "1. Precies genoeg hardware, energie",
+        "group": "1. Minder Hardware",
         "title": "# Public Cloud"
     },
     {
@@ -392,19 +392,8 @@
         "quadrant": 3,
         "urgentie": 75.0,
         "radarcat": "Precies genoeg",
-        "group": "1. Precies genoeg hardware, energie",
+        "group": "1. Minder Hardware",
         "title": "# Twin Datacenters"
-    },
-    {
-        "old_quadrant": 2.0,
-        "ring": 1,
-        "label": "Event-Driven Architectuur",
-        "link": "wiki.html?page=eventDriven",
-        "quadrant": 0,
-        "urgentie": 60.0,
-        "radarcat": "Minder energie",
-        "group": "3. Minder energie",
-        "title": "# Event-Driven Architectuur"
     },
     {
         "old_quadrant": 2.0,
@@ -414,7 +403,7 @@
         "quadrant": 0,
         "urgentie": 50.0,
         "radarcat": "Duurzamee functionaliteit",
-        "group": "5. Softw",
+        "group": "5. Software",
         "title": "# Client server"
     },
     {
@@ -436,7 +425,7 @@
         "quadrant": 0,
         "urgentie": 50.0,
         "radarcat": "Duurzamee functionaliteit",
-        "group": "5. Softw",
+        "group": "5. Software",
         "title": "# Webbased"
     },
     {
@@ -469,7 +458,7 @@
         "quadrant": 0,
         "urgentie": 40.0,
         "radarcat": "Duurzamee functionaliteit",
-        "group": "5. Softw",
+        "group": "5. Software",
         "title": "# APIs"
     },
     {
@@ -491,7 +480,7 @@
         "quadrant": 3,
         "urgentie": 30.0,
         "radarcat": "Precies genoeg",
-        "group": "1. Precies genoeg hardware, energie",
+        "group": "1. Minder Hardware",
         "title": "# Cattle"
     },
     {
@@ -513,7 +502,7 @@
         "quadrant": 3,
         "urgentie": 30.0,
         "radarcat": "Precies genoeg",
-        "group": "1. Precies genoeg hardware, energie",
+        "group": "1. Minder Hardware",
         "title": "# Pets"
     },
     {
@@ -546,7 +535,7 @@
         "quadrant": 0,
         "urgentie": 20.0,
         "radarcat": "Duurzamee functionaliteit",
-        "group": "5. Softw",
+        "group": "5. Software",
         "title": "# Bouw conform je SLA"
     },
     {
@@ -613,7 +602,7 @@
         "quadrant": 3,
         "urgentie": 75.0,
         "radarcat": "Precies genoeg",
-        "group": "1. Precies genoeg hardware, energie",
+        "group": "1. Minder Hardware",
         "title": "# Inkoopbeleid"
     },
     {
@@ -635,7 +624,7 @@
         "quadrant": 3,
         "urgentie": 60.0,
         "radarcat": "Precies genoeg",
-        "group": "1. Precies genoeg hardware, energie",
+        "group": "1. Minder Hardware",
         "title": "# Aanbesteding"
     },
     {
@@ -646,7 +635,7 @@
         "quadrant": 3,
         "urgentie": 60.0,
         "radarcat": "Precies genoeg",
-        "group": "1. Precies genoeg hardware, energie",
+        "group": "1. Minder Hardware",
         "title": "# Hardware"
     },
     {
@@ -678,8 +667,8 @@
         "link": "wiki.html?page=digitaalOndertekenen",
         "quadrant": 0,
         "urgentie": 24.0,
-        "radarcat": "Duurzamee functionaliteit",
-        "group": "5. Softw",
+        "radarcat": "Duurzamere functionaliteit",
+        "group": "5. Software",
         "title": "# Digitaal ondertekenen"
     },
     {
@@ -734,7 +723,7 @@
         "quadrant": 1,
         "urgentie": 9.0,
         "radarcat": "Organisatie",
-        "group": "8. Lunch",
+        "group": "8. Organisatie",
         "title": "# Lunch"
     },
     {

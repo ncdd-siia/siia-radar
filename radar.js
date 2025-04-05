@@ -22,14 +22,16 @@ function radar_visualization(config) {
   config.colors = {
     background: style.getPropertyValue('--kleur-achtergrond'),
     text: style.getPropertyValue('--kleur-tekst'),
-    text_legend: style.getPropertyValue('--kleur-legend'),
-    grid: '#dddde0',
+    text_legend: style.getPropertyValue('--kleur-legend') || '#5E2977', 
+    grid: "#5E2977",
     inactive: "#ddd",
     doing: style.getPropertyValue('--kleur-doing'),
     ongoing: style.getPropertyValue('--kleur-ongoing'),
     planning: style.getPropertyValue('--kleur-planning'),
-    undoing: style.getPropertyValue('--kleur-undoing')
+    undoing: style.getPropertyValue('--kleur-undoing'),
+    text_filter_legend: style.getPropertyValue('--kleur-filterlegend')
   };
+
   config.quadrants = [
     { name: "IT voor verduurzaming" }, //rechtsonder
     { name: "Duurzaam Werken" }, //linksonder
@@ -479,18 +481,52 @@ function radar_visualization(config) {
       .style("stroke", config.colors.grid)
       .style("stroke-width", 2);
     if (config.print_layout) {
-      grid.append("text")
-        .text(config.rings[i].name)
-        .attr("y", -rings[i].radius + 20)//32
-        .attr("text-anchor", "middle")
+      
+      // Capsulevormige labels met kleinere tekst
+      const labelText = config.rings[i].name;
+      const fontSize = 14;//18 // 2pt kleiner dan 20px
+      const paddingX = 8;//10
+      const paddingY = 4;//5
+
+      // Meet de breedte van de tekst
+      const tempText = radar.append("text")
+        .text(labelText)
+        .attr("font-size", fontSize + "px")
+        .attr("visibility", "hidden");
+
+      const textLength = tempText.node().getComputedTextLength();
+      tempText.remove();
+
+      const capsuleWidth = textLength + 2 * paddingX;
+      const capsuleHeight = fontSize + paddingY;
+      const yOffset = -rings[i].radius; // + 20
+
+      // Achtergrond (capsule)
+      grid.append("rect")
+        .attr("x", -capsuleWidth / 2)
+        .attr("y", yOffset - capsuleHeight / 2)
+        .attr("rx", capsuleHeight / 2)
+        .attr("ry", capsuleHeight / 2)
+        .attr("width", capsuleWidth)
+        .attr("height", capsuleHeight)
         .style("fill", config.rings[i].color)
-        .style("opacity", 0.75) //doorzichtigheid van de tekst in de ring
+        .style("opacity", 0.9);
+
+      // Tekst op capsule
+      grid.append("text")
+        .text(labelText)
+        .attr("y", yOffset + fontSize / 3)
+        .attr("text-anchor", "middle")
+        .style("fill", config.colors.background)
+        .style("font-size", fontSize + "px")
+        .style("font-weight", "bold")
         .style("text-transform", "uppercase")
-        .attr("class", "ring-text") // Gebruik de 'title' klasse uit de CSS
-        .style("font-size", "20px")
-        .style("font-weight", "900")
+        .attr("class", "ring-text")
         .style("pointer-events", "none")
         .style("user-select", "none");
+
+      
+      
     }
   }
 
@@ -510,8 +546,7 @@ function radar_visualization(config) {
   if (config.print_layout) {
 
     // title
-    radar
-      .append("text")
+    radar.append("text")
       .attr("transform", translate(title_offset.x, title_offset.y + 20))
       .text(config.title || "")
       //.style("font-family", "Raleway")
@@ -532,78 +567,89 @@ function radar_visualization(config) {
     // legend
     var legend = radar.append("g");
     for (var quadrant = 0; quadrant < 4; quadrant++) {
+      const qx = legend_offset[quadrant].x;
+      const qy = legend_offset[quadrant].y;
+
       legend.append("text")
-        .attr("transform", translate(
-          legend_offset[quadrant].x,
-          legend_offset[quadrant].y - 25//45
-        ))
+        .attr("transform", translate(qx, qy - 25))
         .text(config.quadrants[quadrant].name)
-        //.style("font-family", "Raleway")//
         .attr("class", "legend-text")
         .style("font-size", "20px")
         .style("font-weight", "900")
         .style("fill", config.colors.text_legend);
-      
-      //createFilterButton(
-      //  legend_offset[quadrant].x,
-      //  legend_offset[quadrant].y - 38, // Place the button just below the title
-      //  "Filter",
-      //  config.quadrantGroups[quadrant].map(group => ({ label: group, value: group }))
-      //);
+      const ringHeights = [
+        Math.max(segmented[quadrant][0].length, segmented[quadrant][1].length) * 13 + 30,
+        Math.max(segmented[quadrant][2].length, segmented[quadrant][3].length) * 13 + 30
+      ];
+      const topRowHeight = Math.max(
+        segmented[quadrant][0].length,
+        segmented[quadrant][1].length) * 13 + 30;
 
       for (var ring = 0; ring < 4; ring++) {
-        legend.append("text")
-          .attr("transform", legend_transform(quadrant, ring))
+        const dx = ring < 2 ? 0 : 160; //was 160 180
+        //const dy = ring < 2
+        //  ? 0 // DOING & ONGOING (bovenste rij)
+        //  : topRowHeight + 20; // PLANNING & UNDOING (onderste rij)
+        let dy = 0;
+
+        if (ring === 0) {
+          dy = 0; // DOING (links boven)
+        }
+        if (ring === 1) {
+          dy = segmented[quadrant][0].length * 13 + 30 + 10; // ONGOING (links onder)
+        }
+        if (ring === 2) {
+          dy = 0; // PLANNING (rechts boven)
+        }
+        if (ring === 3) {
+          dy = segmented[quadrant][2].length * 13 + 30 + 10; // UNDOING (rechts onder)
+        }
+
+
+        const groupX = qx + dx;
+        const groupY = qy + dy;
+        const cardWidth = 130; // was 320 - smallere breedte links en rechts consistent
+
+        const ringGroup = legend.append("g")
+          .attr("transform", translate(groupX, groupY));
+
+        ringGroup.append("rect")
+          .attr("x", -20)
+          .attr("y", -10)
+          .attr("width", cardWidth)
+          .attr("height", segmented[quadrant][ring].length * 13 + 30)
+          .attr("rx", 12)
+          .attr("ry", 12)
+          .style("fill", "#ffffff")
+          .style("filter", "drop-shadow(0px 2px 4px rgba(0,0,0,0.15))")
+          .lower();
+
+        ringGroup.append("text")
+          .attr("y", 0)
           .text(config.rings[ring].name)
-          //.style("font-family", "Raleway")//
           .attr("class", "legend-text")
           .style("font-size", "14px")
           .style("font-weight", "bold")
           .style("fill", config.rings[ring].color);
-        legend.selectAll(".legend" + quadrant + ring)
+
+        ringGroup.selectAll(".legend" + quadrant + ring)
           .data(segmented[quadrant][ring])
           .enter()
-            .append("a")
-              .attr("href", function (d, i) {
-                 return d.link ? d.link : "#"; // stay on same page if no link was provided
-              })
-              // Add a target if (and only if) there is a link and we want new tabs
-              .attr("target", function (d, i) {
-                 return (d.link && config.links_in_new_tabs) ? "_blank" : null;
-              })
-              .attr("data-custom-id", function (d, i) {
-                return d.label.replace(/\s+/g, '');
-              })
-              .attr("data-custom-name", function (d, i) {
-                return d.label;
-              })
-              .attr("data-custom-bhvr", function (d, i) {
-                return "NAVIGATION";
-              })
-            .append("text")
-              .attr("transform", function(d, i) { return legend_transform(quadrant, ring, i); })
-              .attr("class", "legend" + quadrant + ring)
-              .attr("id", function(d, i) { return "legendItem" + d.id; })
-              .text(function(d, i) { 
-                // Define a function to truncate text to a maximum length
-                function truncateText(text, maxLength) {
-                  if (text.length > maxLength) {
-                    return text.substring(0, maxLength - 3) + "..."; // Subtract 3 for the ellipsis
-                  } else {
-                    return text;
-                  }
-                }
-              
-                const maxLength = 25; //maximale lengte van de tekst
-                const displayText = d.id + ". " + d.label;
-                return truncateText(displayText, maxLength);
-              })
-              //.style("font-family", "Raleway")//
-              .attr("class", "legend-text")
-              .style("font-size", "11px") //11px
-              .attr("fill", config.colors.text)
-              .on("mouseover", function(d) { showBubble(d); highlightLegendItem(d); })
-              .on("mouseout", function(d) { hideBubble(d); unhighlightLegendItem(d); });
+          .append("a")
+          .attr("href", d => d.link || "#")
+          .attr("target", d => (d.link && config.links_in_new_tabs) ? "_blank" : null)
+          .append("text")
+          .attr("transform", (d, i) => translate(0, 16 + i * 13))
+          .attr("id", d => "legendItem" + d.id)
+          .text(d => {
+            const displayText = d.id + ". " + d.label;
+            return displayText.length > 25 ? displayText.slice(0, 22) + "..." : displayText;
+          })
+          .attr("class", "legend-text")
+          .style("font-size", "11px")
+          .attr("fill", config.colors.text)
+          .on("mouseover", d => { showBubble(d); highlightLegendItem(d); })
+          .on("mouseout", d => { hideBubble(d); unhighlightLegendItem(d); });
       }
     }
     // Filterblok met titel "Filters"

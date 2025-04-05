@@ -2,21 +2,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 :root {
-  --kleur-achtergrond: #f2f8f6; /*#005452; officieel #00116E */
+  --kleur-achtergrond: #F2F5F3; /*#f2f8f6; /*#005452; officieel #00116E */
   --kleur-tekst: black;
-  --kleur-doing: #007351; /*#66d18f;*/
-  --kleur-ongoing: #66ab96; /*white;*/
-  --kleur-planning: #9f7ba9; /*#f5666b;*/
-  --kleur-undoing: #5f236f; /*#ba4fab;*/
-  --kleur-sufficient: #f5666b;
-  --kleur-carbonaware: #ba4fab;
-  --kleur-energie: #66d18f;
-  --kleur-gebruik: #f5666b;
-  --kleur-software: red;
-  --kleur-data: green;
-  --kleur-werken: blue;
-  --kleur-organisatie: grey;
-  --kleur-doelen: blue;
+  --kleur-doing: #097757; /*#007351; /*#66d18f;*/
+  --kleur-ongoing: #759E8A; /*#66ab96; /*white;*/
+  --kleur-planning: #8F709F;/*#9f7ba9; /*#f5666b;*/
+  --kleur-undoing: #5E2977; /*#5f236f; /*#ba4fab;*/
+  --kleur-donkergroen: #097757; /*#007351; /*#66d18f;*/
+  --kleur-lichtgroen: #759E8A; /*#66ab96; /*white;*/
+  --kleur-lichtpaars: #8F709F; /*#9f7ba9; /*#f5666b;*/
+  --kleur-donkerpaars: #5E2977; /*#5f236f; /*#ba4fab;*/
+  --kleur-legend: #5E2977; /*#5f236f; /*#ba4fab;*/
+  --kleur-filterlegend: #003471;
+}
+.legend-card {
+  fill: white;
+  rx: 12;
+  ry: 12;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
 }
 body {
   font-family: 'Poppins';
