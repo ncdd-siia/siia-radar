@@ -844,7 +844,7 @@ function radar_visualization(config) {
       //.attr("transform", translate(filter_offset.x, filter_offset.y));
       .attr("transform", translate(filtersXOffset, filtersYOffset));
 
-    const cardWidth = globalCardWidth * 2 + 20;
+    const cardWidth = globalCardWidth * 2 + 45;
 
     //const cardWidth = globalCardWidth;
 
