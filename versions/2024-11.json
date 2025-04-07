@@ -584,10 +584,10 @@
     },
     {
         "old_quadrant": 3.0,
-        "ring": 3,
+        "ring": 2,
         "label": "CSRD Rapportage",
         "link": "wiki.html?page=csrdRapportage",
-        "quadrant": 1,
+        "quadrant": 2,
         "urgentie": 75.0,
         "radarcat": "Organisatie",
         "group": "8. Organisatie",

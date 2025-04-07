@@ -29,7 +29,7 @@ function radar_visualization(config) {
     ongoing: style.getPropertyValue('--kleur-ongoing'),
     planning: style.getPropertyValue('--kleur-planning'),
     undoing: style.getPropertyValue('--kleur-undoing'),
-    text_filter_legend: style.getPropertyValue('--kleur-filterlegend')
+    text_filter_legend:"#003471" //" style.getPropertyValue('--kleur-filterlegend')
   };
 
   config.quadrants = [
@@ -46,6 +46,8 @@ function radar_visualization(config) {
   ];
   config.print_layout = true;
   config.links_in_new_tabs = false;
+
+
   
   // custom random number generator, to make random sequence reproducible
   // source: https://stackoverflow.com/questions/521295
@@ -108,6 +110,7 @@ function radar_visualization(config) {
       uniqueGroups.add(entry.group);
     }
   }
+ 
   
   // Zet de unieke groepen in het config-object zodat ze elders bruikbaar zijn
   //config.uniqueGroups = Array.from(uniqueGroups);
@@ -140,15 +143,43 @@ function radar_visualization(config) {
     ...overig.sort() // optioneel: alfabetisch sorteren van niet-genummerde groepen
   ];
 
+    function definieerGroepVormen(config) {
+  // Handmatige mapping van groep naar statusvormen 1 t/m 12
+      const vasteGroepvormen = {
+        "1. Minder Hardware": 1,        // filled circle
+        "2. Carbonaware": 7,         // open circle
+        "3. Minder Energie": 3,           // filled square
+        "4. Minder Gebruik": 9,      // open square
+        "5. Software": 5,  // filled pentagon
+        "6. Data": 11,     // open pentagon   
+        "7. Medewerker": 2,     // filled triangle
+        "8. Organisatie": 8     // open triangle
+        //"9. Processen": 
+        //"10. Communicatie": ,         // filled ellipse
+        //"11. Security": 6, // filled star
+        //"12. Hardware": 12      // open star
+      };
+
+      // Maak de mapping volledig: expliciet of automatisch
+      const groupToStatus = {};
+      config.uniqueGroups.forEach((group, index) => {
+        groupToStatus[group] = vasteGroepvormen[group] || ((index % 12) + 1);
+      });
+
+      config.groupToStatus = groupToStatus;
+    }
+
   
+  definieerGroepVormen(config);
+
 
   // Genereer automatisch een mapping van group naar status (vorm)
-  const groupToStatus = {};
-  config.uniqueGroups.forEach((group, index) => {
-    groupToStatus[group] = (index % 12) + 1; // Status loopt van 1 t/m 12 (vormen herhalen indien nodig)
-  });
+  //const groupToStatus = {};
+  //config.uniqueGroups.forEach((group, index) => {
+  //  groupToStatus[group] = (index % 12) + 1; // Status loopt van 1 t/m 12 (vormen herhalen indien nodig)
+  //});
 
-  config.groupToStatus = groupToStatus;
+  //config.groupToStatus = groupToStatus;
 
 
 
@@ -208,13 +239,13 @@ function radar_visualization(config) {
     return {
       clipx: function(d) {
         var c = bounded_box(d, cartesian_min, cartesian_max);
-        var p = bounded_ring(polar(c), polar_min.r + 25, polar_max.r - 25); //15
+        var p = bounded_ring(polar(c), polar_min.r + 10, polar_max.r - 10); //15
         d.x = cartesian(p).x; // adjust data too!
         return d.x;
       },
       clipy: function(d) {
         var c = bounded_box(d, cartesian_min, cartesian_max);
-        var p = bounded_ring(polar(c), polar_min.r + 35, polar_max.r - 35); //15
+        var p = bounded_ring(polar(c), polar_min.r + 15, polar_max.r - 15); //15
         d.y = cartesian(p).y; // adjust data too!
         return d.y;
       },
@@ -544,9 +575,11 @@ function radar_visualization(config) {
   function legend_transform(quadrant, ring, index=null) {
     //var dx = ring < 2 ? 0 : 160; //-120 was 0 ruimte tussen de legenda's
     const isLeft = quadrant === 1 || quadrant === 2;
+
     const dx = ring < 2
       ? 0
-      : (isLeft ? 260 : 160);
+      : (isLeft ? 150 : 100);  // dichter bij elkaar
+
     var dy = (index == null ? 0 : 16 + index * 12); //-16
     if (ring % 2 === 1) {
       dy = dy + 36 + segmented[quadrant][ring-1].length * 12;
@@ -556,6 +589,27 @@ function radar_visualization(config) {
       legend_offset[quadrant].y + dy
     );
   }
+
+  // Bepaal maximale tekstbreedte voor alle legend-items
+  const tempText = radar.append("text")
+    .attr("font-size", "11px")
+    .attr("visibility", "hidden");
+
+  let maxTextWidth = 0;
+  config.entries.forEach(entry => {
+    const text = entry.id + ". " + entry.label;
+    tempText.text(text);
+    const width = tempText.node().getComputedTextLength();
+    if (width > maxTextWidth) {
+      maxTextWidth = width;
+    }
+  });
+  tempText.remove();
+
+  const cardSidePadding = 20;
+  const globalCardWidth = maxTextWidth + cardSidePadding * 2;
+
+
 
   // draw title and legend (only in print layout)
   if (config.print_layout) {
@@ -585,13 +639,18 @@ function radar_visualization(config) {
       const qx = legend_offset[quadrant].x;
       const qy = legend_offset[quadrant].y;
 
+      const titleX = (quadrant === 0 || quadrant === 3) ? qx - 100 : qx;
+
       legend.append("text")
-        .attr("transform", translate(qx, qy - 25))
+        .attr("transform", translate(titleX, qy - 25))
         .text(config.quadrants[quadrant].name)
         .attr("class", "legend-text")
         .style("font-size", "20px")
         .style("font-weight", "900")
         .style("fill", config.colors.text_legend);
+
+      
+
       const ringHeights = [
         Math.max(segmented[quadrant][0].length, segmented[quadrant][1].length) * 13 + 30,
         Math.max(segmented[quadrant][2].length, segmented[quadrant][3].length) * 13 + 30
@@ -599,6 +658,34 @@ function radar_visualization(config) {
       const topRowHeight = Math.max(
         segmented[quadrant][0].length,
         segmented[quadrant][1].length) * 13 + 30;
+      
+      // Stap 1: Langste tekstregel bepalen
+      //const tempText = radar.append("text")
+      //  .attr("font-size", "11px")
+      //  .attr("visibility", "hidden");
+
+      //..let maxTextWidth = 0;
+
+      //..config.entries.forEach(entry => {
+      // / const text = entry.id + ". " + entry.label;
+      //  tempText.text(text);
+      //  const width = tempText.node().getComputedTextLength();
+      //  if (width > maxTextWidth) {
+      //    maxTextWidth = width;
+      //  }
+      //});
+
+      //tempText.remove();
+
+      // Stap 2: Voeg padding toe (bijv. 20px links + 20px rechts)
+      //const cardSidePadding = 20;
+      //const cardWidth = maxTextWidth + cardSidePadding * 2;
+      const cardWidth = globalCardWidth;
+
+      const dx = ring < 2
+        ? (isRight ? -cardSidePadding : 0)
+        : cardWidth + 20; // 20px ruimte tussen kaarten
+
 
       for (var ring = 0; ring < 4; ring++) {
         //const isLeft = quadrant === 1 || quadrant === 2;
@@ -610,7 +697,8 @@ function radar_visualization(config) {
           ? (isRight ? -100 : 0)   // DOING/ONGOING → iets naar links als rechts
           : (isLeft ? 260 : 160);  // PLANNING/UNDOING → verder weg als links
 
-
+        const lineHeight = 13;
+        const extraMargin = 60; //was 30
         //const dx = ring < 2 ? 0 : 160; //was 160 180
         //const dy = ring < 2
         //  ? 0 // DOING & ONGOING (bovenste rij)
@@ -620,24 +708,29 @@ function radar_visualization(config) {
         if (ring === 0) {
           dy = 0; // DOING (links boven)
         }
+        
         if (ring === 1) {
-          dy = segmented[quadrant][0].length * 13 + 30 + 10; // ONGOING (links onder)
+          const prevNumLines = segmented[quadrant][0].length;
+          const prevHeight = prevNumLines * lineHeight + extraMargin;
+          dy = prevHeight + 10; // ONGOING onder DOING
         }
         if (ring === 2) {
           dy = 0; // PLANNING (rechts boven)
         }
         if (ring === 3) {
-          dy = segmented[quadrant][2].length * 13 + 30 + 10; // UNDOING (rechts onder)
+          const prevNumLines = segmented[quadrant][2].length;
+          const prevHeight = prevNumLines * lineHeight + extraMargin;
+          dy = prevHeight + 10; // UNDOING onder PLANNING
         }
 
 
         const groupX = qx + dx;
         const groupY = qy + dy;
-        const cardWidth = 220; // was 320 - smallere breedte links en rechts consistent
+       // const cardWidth = 180; // was 220 320 - smallere breedte links en rechts consistent
 
         const ringGroup = legend.append("g")
           .attr("transform", translate(groupX, groupY));
-        const headerHeight = 22; // hoogte van de bovenbalk
+        const headerHeight = 25; // hoogte van de bovenbalk
         
 
         //ringGroup.append("rect")
@@ -673,11 +766,20 @@ function radar_visualization(config) {
           .style("opacity", 0.95);
 
 
+        
+        const numLines = segmented[quadrant][ring].length;
+        //const padding = extraMargin / 2;
+        const totalHeight = numLines * lineHeight + extraMargin;
+        const padding = (totalHeight - numLines * lineHeight) / 2;
+        const baseY = tabY + tabH;
+        const fontSize = 14;
+
+
         ringGroup.append("rect")
           .attr("x", -20)
           .attr("y", -10)
           .attr("width", cardWidth)
-          .attr("height", segmented[quadrant][ring].length * 13 + 30)
+          .attr("height", totalHeight) //segmented[quadrant][ring].length * 13 + 30)
           .attr("rx", 12)
           .attr("ry", 12)
           .style("fill", "#ffffff")
@@ -685,7 +787,8 @@ function radar_visualization(config) {
           .lower();
 
         ringGroup.append("text")
-          .attr("y", 0)
+          .attr("y", tabY + tabH / 2) 
+          .attr("dominant-baseline", "middle")
           .text(config.rings[ring].name)
           .attr("class", "legend-text")
           .style("font-size", "14px")
@@ -699,7 +802,10 @@ function radar_visualization(config) {
           .attr("href", d => d.link || "#")
           .attr("target", d => (d.link && config.links_in_new_tabs) ? "_blank" : null)
           .append("text")
-          .attr("transform", (d, i) => translate(0, 16 + i * 13))
+          //.attr("transform", (d, i) => translate(0, 24 + i * 13)) //was 16
+          //.attr("transform", (d, i) => translate(0, padding + i * lineHeight))
+          //const baseY = 15; // onderrand tabblad
+          .attr("transform", (d, i) => translate(0, baseY + padding + i * lineHeight))
           .attr("id", d => "legendItem" + d.id)
           .text(d => {
             const displayText = d.id + ". " + d.label;
@@ -717,12 +823,33 @@ function radar_visualization(config) {
         // Teken de witte card met titel en 2 kolommen filters
     
     // Teken de gekleurde header-tab en witte kaart
-    var filtersLegend = radar.append("g")
-      .attr("transform", translate(filter_offset.x, filter_offset.y));
 
-    const cardWidth = 400;
+    const lineHeight = 13;
+    const extraMargin = 60;
+    const spacing = 10;  // verticale ruimte tussen kaarten
+    const extraBelow = 30; // ruimte tussen laatste kaart en filterblok
+
+    const topLines = segmented[1][0].length;
+    const topHeight = topLines * lineHeight + extraMargin;
+
+    const bottomLines = segmented[1][1].length;
+    const bottomHeight = bottomLines * lineHeight + extraMargin;
+
+    const leftBlockY = legend_offset[1].y;
+    const filtersYOffset = leftBlockY + topHeight + spacing + bottomHeight + extraBelow;
+
+    const filtersXOffset = -820; // ← handhaaf originele horizontale uitlijning
+
+    var filtersLegend = radar.append("g")
+      //.attr("transform", translate(filter_offset.x, filter_offset.y));
+      .attr("transform", translate(filtersXOffset, filtersYOffset));
+
+    const cardWidth = globalCardWidth * 2 + 20;
+
+    //const cardWidth = globalCardWidth;
+
     const cardHeight = 180;
-    const headerHeight = 22;
+    const headerHeight = 30; //was 22
     const radius = 12;
 
     // Tabblad-header met afgeronde bovenhoeken en rechte onderkant
@@ -746,11 +873,13 @@ function radar_visualization(config) {
     filtersLegend.append("text")
       .text("Filters")
       .attr("x", 12)
-      .attr("y", 15)
+      .attr("y", headerHeight / 2)
       .attr("class", "legend-text")
+      .attr("dominant-baseline", "middle")
       .style("font-size", "14px")
       .style("font-weight", "bold")
       .style("fill", config.colors.background);
+
 
     // Witte body van de kaart
     filtersLegend.append("rect")
@@ -791,12 +920,89 @@ function radar_visualization(config) {
 
       // Vormpje
       function drawShape(status, color, parent) {
-        if (status === 1) {
-          parent.append("circle").attr("r", 5).attr("fill", color);
-        } else {
-          parent.append("rect").attr("x", -5).attr("y", -5).attr("width", 10).attr("height", 10).attr("fill", color);
+        const strokeWidth = 1.5;
+
+        switch (status) {
+          case 1: // filled circle
+            parent.append("circle")
+              .attr("r", 5)
+              .attr("fill", color);
+            break;
+          case 2: // filled triangle
+            parent.append("path")
+              .attr("d", "M -6,3 6,3 0,-7 z")
+              .attr("fill", color);
+            break;
+          case 3: // filled square
+            parent.append("rect")
+              .attr("x", -5).attr("y", -5).attr("width", 10).attr("height", 10)
+              .attr("fill", color);
+            break;
+          case 4: // filled ellipse
+            parent.append("ellipse")
+              .attr("rx", 6).attr("ry", 4)
+              .attr("fill", color);
+            break;
+          case 5: // filled pentagon
+            parent.append("path")
+              .attr("d", "M 0,-6 L 5,-2 L 3,5 L -3,5 L -5,-2 Z")
+              .attr("fill", color);
+            break;
+          case 6: // filled star
+            parent.append("path")
+              .attr("d", "M0,-6 L2,-2 L6,-2 L3,1 L4,5 L0,3 L-4,5 L-3,1 L-6,-2 L-2,-2 Z")
+              .attr("fill", color);
+            break;
+          case 7: // open circle
+            parent.append("circle")
+              .attr("r", 5)
+              .attr("fill", "none")
+              .attr("stroke", color)
+              .attr("stroke-width", strokeWidth);
+            break;
+          case 8: // open triangle
+            parent.append("path")
+              .attr("d", "M -6,3 6,3 0,-7 z")
+              .attr("fill", "none")
+              .attr("stroke", color)
+              .attr("stroke-width", strokeWidth);
+            break;
+          case 9: // open square
+            parent.append("rect")
+              .attr("x", -5).attr("y", -5).attr("width", 10).attr("height", 10)
+              .attr("fill", "none")
+              .attr("stroke", color)
+              .attr("stroke-width", strokeWidth);
+            break;
+          case 10: // open ellipse
+            parent.append("ellipse")
+              .attr("rx", 6).attr("ry", 4)
+              .attr("fill", "none")
+              .attr("stroke", color)
+              .attr("stroke-width", strokeWidth);
+            break;
+          case 11: // open pentagon
+            parent.append("path")
+              .attr("d", "M 0,-6 L 5,-2 L 3,5 L -3,5 L -5,-2 Z")
+              .attr("fill", "none")
+              .attr("stroke", color)
+              .attr("stroke-width", strokeWidth);
+            break;
+          case 12: // open star
+            parent.append("path")
+              .attr("d", "M0,-6 L2,-2 L6,-2 L3,1 L4,5 L0,3 L-4,5 L-3,1 L-6,-2 L-2,-2 Z")
+              .attr("fill", "none")
+              .attr("stroke", color)
+              .attr("stroke-width", strokeWidth);
+            break;
+          default: // fallback: filled circle
+            parent.append("circle")
+              .attr("r", 5)
+              .attr("fill", color);
         }
       }
+
+
 
       drawShape(status, color, groupItem);
 
