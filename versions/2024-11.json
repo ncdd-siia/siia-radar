@@ -106,7 +106,7 @@
         "quadrant": 3,
         "urgentie": 30.0,
         "radarcat": "Duurzaam Gebruik",
-        "group": "4. Minder Gebruik",
+        "group": "4. Duurzaam Gebruik",
         "title": "# Self-service"
     },
     {
@@ -249,7 +249,7 @@
         "quadrant": 3,
         "urgentie": 30.0,
         "radarcat": "Duurzaam Gebruik",
-        "group": "4. Minder Gebruik",
+        "group": "4. Duurzaam Gebruik",
         "title": "# Wegwijzer"
     },
     {
@@ -260,7 +260,7 @@
         "quadrant": 0,
         "urgentie": 24.0,
         "radarcat": "Duurzaam Gebruik",
-        "group": "4. Minder Gebruik",
+        "group": "4. Duurzaam Gebruik",
         "title": "# Reservations"
     },
     {
@@ -271,7 +271,7 @@
         "quadrant": 0,
         "urgentie": 24.0,
         "radarcat": "Duurzaam Gebruik",
-        "group": "4. Minder Gebruik",
+        "group": "4. Duurzaam Gebruik",
         "title": "# Workbooks"
     },
     {

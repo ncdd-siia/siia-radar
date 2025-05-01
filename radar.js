@@ -145,15 +145,29 @@ function radar_visualization(config) {
 
     function definieerGroepVormen(config) {
   // Handmatige mapping van groep naar statusvormen 1 t/m 12
+          //case 1:  filled circle            
+          //case 2:  filled triangle 
+          //case 3:  filled square 
+          //case 4:  filled ellipse 
+          //case 5:  filled pentagon  
+          //case 6:  filled hexagon  
+          //case 7:  filled star  
+          //case 8:  open circle  
+          //case 9:  open triangle  
+          //case 10: open square  
+          //case 11: open ellipse  
+          //case 12: open pentagon  
+          //case 13: open hexagon  
+          //case 14: open star
       const vasteGroepvormen = {
         "1. Minder Hardware": 1,        // filled circle
-        "2. Carbonaware": 7,         // open circle
-        "3. Minder Energie": 3,           // filled square
-        "4. Minder Gebruik": 9,      // open square
-        "5. Software": 5,  // filled pentagon
-        "6. Data": 11,     // open pentagon   
-        "7. Medewerker": 2,     // filled triangle
-        "8. Organisatie": 8     // open triangle
+        "2. Carbonaware": 2,            // closed circle
+        "3. Minder Energie": 3,        // filled square
+        "4. Duurzaam Gebruik": 5,      // filled pentagon
+        "5. Software": 6,              // filled hexagon
+        "6. Data": 8,           // open circle   
+        "7. Medewerker": 9,     // open triangle
+        "8. Organisatie": 10     // open square
         //"9. Processen": 
         //"10. Communicatie": ,         // filled ellipse
         //"11. Security": 6, // filled star
@@ -428,11 +442,21 @@ function radar_visualization(config) {
 
       if (groupFilter === null || !isMatch) {
         // Reset shape style
-        shape
-          .attr("transform", null)
-          .style("fill", d.color)
-          .style("stroke", "none")
-          .style("stroke-width", 0);
+        shape.attr("transform", null)
+        if (d.status >= 8) {
+          // open vormen herstellen
+          shape
+            .style("fill", "none")
+            .style("stroke", d.color)
+            .style("stroke-width", 2);
+        } else {
+          // dichte vormen herstellen
+          shape
+            .style("fill", d.color)
+            .style("stroke", "none")
+            .style("stroke-width", 0);
+        }
+          
 
         // Reset text
         text
@@ -624,14 +648,14 @@ function radar_visualization(config) {
       .style("fill", config.colors.text)
 
     // footer
-    radar.append("text")
-      .attr("transform", translate(footer_offset.x, footer_offset.y))
-      .text("■ nieuw ▲ verplaatst")
-      .attr("xml:space", "preserve")
-      //.style("font-family", "Raleway")
-      .attr("class", "title")
-      .style("font-size", "10px")
-      .style("fill", config.colors.text);
+    //radar.append("text")
+    //  .attr("transform", translate(footer_offset.x, footer_offset.y))
+    //  .text("■ nieuw ▲ verplaatst")
+    //  .attr("xml:space", "preserve")
+    //  //.style("font-family", "Raleway")
+    //  .attr("class", "title")
+    //  .style("font-size", "10px")
+    //  .style("fill", config.colors.text);
 
     // legend
     var legend = radar.append("g");
@@ -948,47 +972,59 @@ function radar_visualization(config) {
               .attr("d", "M 0,-6 L 5,-2 L 3,5 L -3,5 L -5,-2 Z")
               .attr("fill", color);
             break;
-          case 6: // filled star
+          case 6: // filled hexagon
+            parent.append("path")
+              .attr("d", "M 0,-6 L 5,-3 L 5,3 L 0,6 L -5,3 L -5,-3 Z")
+              .attr("fill", color);
+            break;  
+          case 7: // filled star
             parent.append("path")
               .attr("d", "M0,-6 L2,-2 L6,-2 L3,1 L4,5 L0,3 L-4,5 L-3,1 L-6,-2 L-2,-2 Z")
               .attr("fill", color);
             break;
-          case 7: // open circle
+          case 8: // open circle
             parent.append("circle")
               .attr("r", 5)
               .attr("fill", "none")
               .attr("stroke", color)
               .attr("stroke-width", strokeWidth);
             break;
-          case 8: // open triangle
+          case 9: // open triangle
             parent.append("path")
               .attr("d", "M -6,3 6,3 0,-7 z")
               .attr("fill", "none")
               .attr("stroke", color)
               .attr("stroke-width", strokeWidth);
             break;
-          case 9: // open square
+          case 10: // open square
             parent.append("rect")
               .attr("x", -5).attr("y", -5).attr("width", 10).attr("height", 10)
               .attr("fill", "none")
               .attr("stroke", color)
               .attr("stroke-width", strokeWidth);
             break;
-          case 10: // open ellipse
+          case 11: // open ellipse
             parent.append("ellipse")
               .attr("rx", 6).attr("ry", 4)
               .attr("fill", "none")
               .attr("stroke", color)
               .attr("stroke-width", strokeWidth);
             break;
-          case 11: // open pentagon
+          case 12: // open pentagon
             parent.append("path")
               .attr("d", "M 0,-6 L 5,-2 L 3,5 L -3,5 L -5,-2 Z")
               .attr("fill", "none")
               .attr("stroke", color)
               .attr("stroke-width", strokeWidth);
             break;
-          case 12: // open star
+          case 13: // open hexagon
+            parent.append("path")
+              .attr("d", "M 0,-6 L 5,-3 L 5,3 L 0,6 L -5,3 L -5,-3 Z")
+              .attr("fill", "none")
+              .attr("stroke", color)
+              .attr("stroke-width", 1.5);
+            break;
+          case 14: // open star
             parent.append("path")
               .attr("d", "M0,-6 L2,-2 L6,-2 L3,1 L4,5 L0,3 L-4,5 L-3,1 L-6,-2 L-2,-2 Z")
               .attr("fill", "none")
@@ -1103,8 +1139,8 @@ function radar_visualization(config) {
     // d.status = config.uniqueGroups.indexOf(d.group) + 1;
     d.status = config.groupToStatus[d.group] || 1;
 
-    // Tekstkleur aanpassen bij open vormen (vanaf status 7)
-    if (d.status >= 7) {
+    // Tekstkleur aanpassen bij open vormen (vanaf status 8)
+    if (d.status >= 8) {
       d.textColor = (d.textColor === "white") ? "black" : "white";
     }
 
@@ -1141,23 +1177,23 @@ function radar_visualization(config) {
       blip.append("path")
         .attr("d", "M 0,-10 L 9,-3 L 6,8 L -6,8 L -9,-3 Z")
         .attr("fill", d.color);
-    } else if (d.status == 6) { // filled star
+    } else if (d.status == 6) { // filled hexagon
       blip.append("path")
-        .attr("d", "M0,-10 L3,-3 L10,-3 L5,2 L7,9 L0,5 L-7,9 L-5,2 L-10,-3 L-3,-3 Z")
+        .attr("d", "M 0,-10 L 9,-5 L 9,5 L 0,10 L -9,5 L -9,-5 Z")
         .attr("fill", d.color);
-    } else if (d.status == 7) { // open circle
+    } else if (d.status == 8) { // open circle
       blip.append("circle")
         .attr("r", 9)
         .attr("fill", "none")
         .attr("stroke", d.color)
         .attr("stroke-width", 2);
-    } else if (d.status == 8) { // open triangle
+    } else if (d.status == 9) { // open triangle
       blip.append("path")
         .attr("d", "M -11,5 11,5 0,-13 z")
         .attr("fill", "none")
         .attr("stroke", d.color)
         .attr("stroke-width", 2);
-    } else if (d.status == 9) { // open square
+    } else if (d.status == 10) { // open square
       blip.append("rect")
         .attr("x", -7)
         .attr("y", -7)
@@ -1166,20 +1202,20 @@ function radar_visualization(config) {
         .attr("fill", "none")
         .attr("stroke", d.color)
         .attr("stroke-width", 2);        
-    } else if (d.status == 10) { // open ellipse
+    } else if (d.status == 11) { // open ellipse
       blip.append("ellipse")
         .attr("rx", 9)
         .attr("ry", 6)
         .attr("fill", "none")
         .attr("stroke", d.color)
         .attr("stroke-width", 2);
-    } else if (d.status == 11) { // open pentagon
+    } else if (d.status == 12) { // open pentagon
       blip.append("path")
         .attr("d", "M 0,-10 L 9,-3 L 6,8 L -6,8 L -9,-3 Z")
         .attr("fill", "none")
         .attr("stroke", d.color)
         .attr("stroke-width", 2);
-    } else if (d.status == 12) { // open star
+    } else if (d.status == 13) { // open star
       blip.append("path")
         .attr("d", "M0,-10 L3,-3 L10,-3 L5,2 L7,9 L0,5 L-7,9 L-5,2 L-10,-3 L-3,-3 Z")
         .attr("fill", "none")
@@ -1201,7 +1237,7 @@ function radar_visualization(config) {
         .style("fill", d.textColor)
         //.style("font-family", "Raleway")//
         .attr("class", "blip-text")
-        .style("font-size", function(d) { return blip_text.length > 2 ? "8px" : "9px"; })
+        .style("font-size", function(d) { return blip_text.length > 2 ? "7px" : "8px"; }) //8 9
         .style("pointer-events", "none")
         .style("user-select", "none");
     }
