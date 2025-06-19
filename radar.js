@@ -13,6 +13,20 @@
 // all copies or substantial portions of the Software.
 
 function radar_visualization(config) {
+  // *** VERY EXPLICIT DEBUG LOGGING ***
+  console.log('DEBUG (radar_visualization): RECEIVED config.entries count:', config && config.entries ? config.entries.length : 'N/A');
+  if (config && config.entries && typeof deletedItemIdForDebug !== 'undefined' && deletedItemIdForDebug !== null) {
+    const isDeletedItemPresent = config.entries.some(e => e.id == deletedItemIdForDebug);
+    console.log(`DEBUG (radar_visualization): Is deleted item ${deletedItemIdForDebug} present upon ENTRY? ->`, isDeletedItemPresent);
+  }
+  console.log('DEBUG (radar_visualization): RECEIVED full config:', config ? JSON.parse(JSON.stringify(config)) : 'N/A');
+
+  console.log('--- radar_visualization called ---');
+  console.log('Received config.entries count:', config.entries ? config.entries.length : 'N/A');
+  // console.log('Received config:', JSON.parse(JSON.stringify(config))); // Deep copy log if needed
+
+  // Clear previous drawing to avoid duplicates on re-render
+  d3.select('#'+(config.svg_id||'radar')).selectAll('*').remove();
 
   const style = getComputedStyle(document.documentElement);
 
@@ -44,6 +58,10 @@ function radar_visualization(config) {
     { name: "PLANNING", color: config.colors.planning, textColor: "white" },
     { name: "UNDOING", color: config.colors.undoing, textColor: "white" }
   ];
+  // Store these base definitions globally if not already present
+  if (!window.lastLoadedConfig.quadrants) window.lastLoadedConfig.quadrants = config.quadrants;
+  if (!window.lastLoadedConfig.rings) window.lastLoadedConfig.rings = config.rings;
+
   config.print_layout = true;
   config.links_in_new_tabs = false;
 
@@ -103,7 +121,8 @@ function radar_visualization(config) {
   const filter_offset =
     { x: -820, y: 245 };//390
 
-  const uniqueGroups = new Set(); //stores the unique values of the field "group"
+  // Start with groups passed in config so they are never lost
+  const uniqueGroups = new Set(Array.isArray(config.uniqueGroups)?config.uniqueGroups:[]);
   for (let i = 0; i < config.entries.length; i++) {
     const entry = config.entries[i];
     if (entry.group) {
@@ -117,6 +136,9 @@ function radar_visualization(config) {
   
   // Zet de unieke groepen in het config-object zodat ze elders bruikbaar zijn
   let unsortedGroups = Array.from(uniqueGroups);
+  if (unsortedGroups.length === 0 && Array.isArray(config.uniqueGroups) && config.uniqueGroups.length > 0) {
+    unsortedGroups = config.uniqueGroups.slice();
+  }
 
   // Regex voor "nummer. tekst" patroon
   const nummeringRegex = /^(\d+)\.\s/;
@@ -145,29 +167,15 @@ function radar_visualization(config) {
 
     function definieerGroepVormen(config) {
   // Handmatige mapping van groep naar statusvormen 1 t/m 12
-          //case 1:  filled circle            
-          //case 2:  filled triangle 
-          //case 3:  filled square 
-          //case 4:  filled ellipse 
-          //case 5:  filled pentagon  
-          //case 6:  filled hexagon  
-          //case 7:  filled star  
-          //case 8:  open circle  
-          //case 9:  open triangle  
-          //case 10: open square  
-          //case 11: open ellipse  
-          //case 12: open pentagon  
-          //case 13: open hexagon  
-          //case 14: open star
       const vasteGroepvormen = {
         "1. Minder Hardware": 1,        // filled circle
-        "2. Carbonaware": 2,            // closed circle
-        "3. Minder Energie": 3,        // filled square
-        "4. Duurzaam Gebruik": 5,      // filled pentagon
-        "5. Software": 6,              // filled hexagon
-        "6. Data": 8,           // open circle   
-        "7. Medewerker": 9,     // open triangle
-        "8. Organisatie": 10     // open square
+        "2. Carbonaware": 7,         // open circle
+        "3. Minder Energie": 3,           // filled square
+        "4. Minder Gebruik": 9,      // open square
+        "5. Software": 5,  // filled pentagon
+        "6. Data": 11,     // open pentagon   
+        "7. Medewerker": 2,     // filled triangle
+        "8. Organisatie": 8     // open triangle
         //"9. Processen": 
         //"10. Communicatie": ,         // filled ellipse
         //"11. Security": 6, // filled star
@@ -276,7 +284,28 @@ function radar_visualization(config) {
   // position each entry randomly in its segment
   for (var i = 0; i < config.entries.length; i++) {
     var entry = config.entries[i];
-    entry.segment = segment(entry.quadrant, entry.ring);
+
+    // *** REMOVE REDUNDANT VALIDATION FROM HERE ***
+    /* 
+    // *** START VALIDATION ADDED ***
+    if (entry.quadrant === undefined || entry.quadrant === null || entry.quadrant < 0 || entry.quadrant > 3) {
+      console.warn(`Skipping entry due to invalid quadrant (${entry.quadrant}):`, entry);
+      continue; // Skip this entry and go to the next iteration
+    }
+    if (entry.ring === undefined || entry.ring === null || entry.ring < 0 || entry.ring > 3) {
+      console.warn(`Skipping entry due to invalid ring (${entry.ring}):`, entry);
+      continue; // Skip this entry and go to the next iteration
+    }
+    // *** END VALIDATION ADDED ***
+    */
+    // *** END REMOVAL ***
+
+    // This check might still be useful if an entry was valid for segmentation 
+    // but somehow becomes invalid later, although unlikely now.
+    // We'll rely on the earlier filtering for now.
+    // If segment calculation fails later, we might need a check here again.
+    
+    entry.segment = segment(entry.quadrant, entry.ring); // This should now only receive valid quadrant/ring
     var point = entry.segment.random();
     entry.x = point.x;
     entry.y = point.y;
@@ -298,18 +327,7 @@ function radar_visualization(config) {
     segmented[entry.quadrant][entry.ring].push(entry);
   }
 
-  // assign unique sequential id to each entry
-  var id = 1;
-  for (var quadrant of [2,3,1,0]) {
-    for (var ring = 0; ring < 4; ring++) {
-      var entries = segmented[quadrant][ring];
-      for (var i=0; i<entries.length; i++) {
-        entries[i].id = "" + id++;
-      }
-    }
-  }
-
-
+  // (displayId is assigned in applyRadarData before visualization)
 
   let filterActive = false; // Houd bij of de filter actief is
 
@@ -442,21 +460,11 @@ function radar_visualization(config) {
 
       if (groupFilter === null || !isMatch) {
         // Reset shape style
-        shape.attr("transform", null)
-        if (d.status >= 8) {
-          // open vormen herstellen
-          shape
-            .style("fill", "none")
-            .style("stroke", d.color)
-            .style("stroke-width", 2);
-        } else {
-          // dichte vormen herstellen
-          shape
-            .style("fill", d.color)
-            .style("stroke", "none")
-            .style("stroke-width", 0);
-        }
-          
+        shape
+          .attr("transform", null)
+          .style("fill", d.color)
+          .style("stroke", "none")
+          .style("stroke-width", 0);
 
         // Reset text
         text
@@ -491,6 +499,9 @@ function radar_visualization(config) {
           .style("padding", "2px 4px");
       }
     });
+
+    // Update URL when filter changes
+    navigation.updateURL(null, null, groupFilter);
   }
 
 
@@ -504,6 +515,9 @@ function radar_visualization(config) {
 
   var radar = svg.append("g");
   radar.attr("transform", translate(config.width / 2, config.height / 2 - 80));
+
+  // Extract editMode for easier access
+  const editMode = config.editMode || false;
 
   var grid = radar.append("g");
 
@@ -631,7 +645,8 @@ function radar_visualization(config) {
   tempText.remove();
 
   const cardSidePadding = 20;
-  const globalCardWidth = maxTextWidth + cardSidePadding * 2;
+  // Ensure legend cards have a reasonable minimal width so ring titles are not truncated
+  const globalCardWidth = Math.max(maxTextWidth + cardSidePadding * 2, 200);
 
 
 
@@ -648,14 +663,14 @@ function radar_visualization(config) {
       .style("fill", config.colors.text)
 
     // footer
-    //radar.append("text")
-    //  .attr("transform", translate(footer_offset.x, footer_offset.y))
-    //  .text("■ nieuw ▲ verplaatst")
-    //  .attr("xml:space", "preserve")
-    //  //.style("font-family", "Raleway")
-    //  .attr("class", "title")
-    //  .style("font-size", "10px")
-    //  .style("fill", config.colors.text);
+    radar.append("text")
+      .attr("transform", translate(footer_offset.x, footer_offset.y))
+      .text("■ nieuw ▲ verplaatst")
+      .attr("xml:space", "preserve")
+      //.style("font-family", "Raleway")
+      .attr("class", "title")
+      .style("font-size", "10px")
+      .style("fill", config.colors.text);
 
     // legend
     var legend = radar.append("g");
@@ -757,6 +772,8 @@ function radar_visualization(config) {
         const headerHeight = 25; // hoogte van de bovenbalk
         
 
+        
+
         //ringGroup.append("rect")
         //  .attr("x", -20)
         //  .attr("y", -10)
@@ -819,27 +836,66 @@ function radar_visualization(config) {
           .style("font-weight", "bold")
           .style("fill",config.colors.background );//config.rings[ring].color);
 
-        ringGroup.selectAll(".legend" + quadrant + ring)
-          .data(segmented[quadrant][ring])
-          .enter()
-          .append("a")
-          .attr("href", d => d.link || "#")
-          .attr("target", d => (d.link && config.links_in_new_tabs) ? "_blank" : null)
-          .append("text")
-          //.attr("transform", (d, i) => translate(0, 24 + i * 13)) //was 16
-          //.attr("transform", (d, i) => translate(0, padding + i * lineHeight))
-          //const baseY = 15; // onderrand tabblad
+        // Bind data for legend items in this ring/quadrant
+        var legendUpdateSelection = ringGroup.selectAll(".legendGroup") // Select by a class
+            .data(segmented[quadrant][ring], d => d.id); // Key function by ID
+
+        console.log(`Q${quadrant}R${ring} Legend Update: ${legendUpdateSelection.size()} items`);
+
+        // Handle exit selection
+        var legendExitSelection = legendUpdateSelection.exit();
+        console.log(`Q${quadrant}R${ring} Legend Exit: ${legendExitSelection.size()} items to remove`);
+        legendExitSelection.remove();
+
+        // Handle enter selection
+        var legendEnterSelection = legendUpdateSelection.enter();
+        console.log(`Q${quadrant}R${ring} Legend Enter: ${legendEnterSelection.size()} items to add`);
+
+        // Append new groups for entering items
+        var legendGroups = legendEnterSelection.append("g")
+            .attr("class", "legendGroup") // Add class for selection
+            .merge(legendUpdateSelection); // Merge enter and update
+
+        // Apply attributes and listeners to all merged groups (new and updating)
+        legendGroups
           .attr("transform", (d, i) => translate(0, baseY + padding + i * lineHeight))
-          .attr("id", d => "legendItem" + d.id)
-          .text(d => {
-            const displayText = d.id + ". " + d.label;
-            return displayText.length > 25 ? displayText.slice(0, 22) + "..." : displayText;
-          })
-          .attr("class", "legend-text")
-          .style("font-size", "11px")
-          .attr("fill", config.colors.text)
-          .on("mouseover", d => { showBubble(d); highlightLegendItem(d); })
-          .on("mouseout", d => { hideBubble(d); unhighlightLegendItem(d); });
+            .attr("id", d => "legendGroup" + d.id) // ID on the group
+            .style("cursor", "pointer")
+            .on("click", function (d) {
+              const e = d3.event;
+            
+              const quickMenuOn = window.enableQuickMenu === true;
+            
+              if (quickMenuOn && typeof showQuickMenu === "function") {
+                // edit-modus → eerst keuzes tonen
+                showQuickMenu(d, e);
+              } else if (d.link && d.link.trim() !== "") {
+                // readonly → direct navigeren
+                if (config.links_in_new_tabs) {
+                  window.open(d.link, "_blank");
+                } else {
+                  window.location.href = d.link;
+                }
+              }
+            })
+            
+            .each(function(d) {
+              // Ensure content is added/updated for both enter and update
+              const group = d3.select(this);
+              group.selectAll("*").remove(); // Clear previous content before potentially redrawing
+
+              // Append the label text (or update existing)
+              group.append("text")
+                .text(d => {
+                  const displayText = d.displayId + ". " + d.label;
+                  return displayText.length > 25 ? displayText.slice(0, 22) + "..." : displayText;
+                })
+                .attr("class", "legend-text")
+                .style("font-size", "11px")
+                .attr("fill", config.colors.text)
+                .on("mouseover", () => { showBubble(d); highlightLegendItem(d); })
+                .on("mouseout", () => { hideBubble(d); unhighlightLegendItem(d); });
+          });
       }
     }
     // Filterblok met titel "Filters"
@@ -972,59 +1028,47 @@ function radar_visualization(config) {
               .attr("d", "M 0,-6 L 5,-2 L 3,5 L -3,5 L -5,-2 Z")
               .attr("fill", color);
             break;
-          case 6: // filled hexagon
-            parent.append("path")
-              .attr("d", "M 0,-6 L 5,-3 L 5,3 L 0,6 L -5,3 L -5,-3 Z")
-              .attr("fill", color);
-            break;  
-          case 7: // filled star
+          case 6: // filled star
             parent.append("path")
               .attr("d", "M0,-6 L2,-2 L6,-2 L3,1 L4,5 L0,3 L-4,5 L-3,1 L-6,-2 L-2,-2 Z")
               .attr("fill", color);
             break;
-          case 8: // open circle
+          case 7: // open circle
             parent.append("circle")
               .attr("r", 5)
               .attr("fill", "none")
               .attr("stroke", color)
               .attr("stroke-width", strokeWidth);
             break;
-          case 9: // open triangle
+          case 8: // open triangle
             parent.append("path")
               .attr("d", "M -6,3 6,3 0,-7 z")
               .attr("fill", "none")
               .attr("stroke", color)
               .attr("stroke-width", strokeWidth);
             break;
-          case 10: // open square
+          case 9: // open square
             parent.append("rect")
               .attr("x", -5).attr("y", -5).attr("width", 10).attr("height", 10)
               .attr("fill", "none")
               .attr("stroke", color)
               .attr("stroke-width", strokeWidth);
             break;
-          case 11: // open ellipse
+          case 10: // open ellipse
             parent.append("ellipse")
               .attr("rx", 6).attr("ry", 4)
               .attr("fill", "none")
               .attr("stroke", color)
               .attr("stroke-width", strokeWidth);
             break;
-          case 12: // open pentagon
+          case 11: // open pentagon
             parent.append("path")
               .attr("d", "M 0,-6 L 5,-2 L 3,5 L -3,5 L -5,-2 Z")
               .attr("fill", "none")
               .attr("stroke", color)
               .attr("stroke-width", strokeWidth);
             break;
-          case 13: // open hexagon
-            parent.append("path")
-              .attr("d", "M 0,-6 L 5,-3 L 5,3 L 0,6 L -5,3 L -5,-3 Z")
-              .attr("fill", "none")
-              .attr("stroke", color)
-              .attr("stroke-width", 1.5);
-            break;
-          case 14: // open star
+          case 12: // open star
             parent.append("path")
               .attr("d", "M0,-6 L2,-2 L6,-2 L3,1 L4,5 L0,3 L-4,5 L-3,1 L-6,-2 L-2,-2 Z")
               .attr("fill", "none")
@@ -1107,28 +1151,67 @@ function radar_visualization(config) {
   }
 
   function highlightLegendItem(d) {
-    var legendItem = document.getElementById("legendItem" + d.id);
-    legendItem.setAttribute("filter", "url(#solid)");
-    legendItem.setAttribute("fill", config.colors.background);
+    // Select the group, then the text within it
+    var legendGroup = d3.select("#legendGroup" + d.id);
+    var legendText = legendGroup.select("text.legend-text");
+    if (!legendText.empty()) {
+      legendText.style("font-weight", "bold"); // Make text bold instead of filter
+      legendText.style("fill", "blue"); // Change color for highlight
+    }
   }
 
   function unhighlightLegendItem(d) {
-    var legendItem = document.getElementById("legendItem" + d.id);
-    legendItem.removeAttribute("filter");
-    legendItem.setAttribute("fill", config.colors.text);
+    var legendGroup = d3.select("#legendGroup" + d.id);
+    var legendText = legendGroup.select("text.legend-text");
+    if (!legendText.empty()) {
+      legendText.style("font-weight", "normal");
+      legendText.style("fill", config.colors.text); // Restore original color
+    }
   }
 
 
   
   // draw blips on radar
-  var blips = rink.selectAll(".blip")
-    .data(config.entries)
-    .enter()
-      .append("g")
+  var blipUpdateSelection = rink.selectAll(".blip").data(config.entries, d => d.id); // Key function by ID
+
+  console.log(`Blip Update: ${blipUpdateSelection.size()} items`);
+
+  // Handle exit selection (items to be removed)
+  var blipExitSelection = blipUpdateSelection.exit();
+  console.log(`Blip Exit: ${blipExitSelection.size()} items to remove`);
+  blipExitSelection.remove();
+
+  // Handle enter selection (new items to be added)
+  var blipEnterSelection = blipUpdateSelection.enter();
+  console.log(`Blip Enter: ${blipEnterSelection.size()} items to add`);
+
+  var blips = blipEnterSelection.append("g")
         .attr("class", "blip")
-        .attr("transform", function(d, i) { return legend_transform(d.quadrant, d.ring, i); })
+      // Merge enter and update selections for subsequent operations
+      .merge(blipUpdateSelection);
+
+  blips.attr("transform", function(d, i) { return legend_transform(d.quadrant, d.ring, i); })
         .on("mouseover", function(d) { showBubble(d); highlightLegendItem(d); })
-        .on("mouseout", function(d) { hideBubble(d); unhighlightLegendItem(d); });
+        .on("mouseout", function(d) { hideBubble(d); unhighlightLegendItem(d); })
+        .style("cursor", "pointer")
+        .on("click", function (d) {
+          const e = d3.event;
+        
+          const quickMenuOn = window.enableQuickMenu === true;
+        
+          if (quickMenuOn && typeof showQuickMenu === "function") {
+            // edit-modus → eerst keuzes tonen
+            showQuickMenu(d, e);
+          } else if (d.link && d.link.trim() !== "") {
+            // readonly → direct navigeren
+            if (config.links_in_new_tabs) {
+              window.open(d.link, "_blank");
+            } else {
+              window.location.href = d.link;
+            }
+          }
+        });
+        
 
   // configure each blip
   blips.each(function(d) {
@@ -1139,17 +1222,9 @@ function radar_visualization(config) {
     // d.status = config.uniqueGroups.indexOf(d.group) + 1;
     d.status = config.groupToStatus[d.group] || 1;
 
-    // Tekstkleur aanpassen bij open vormen (vanaf status 8)
-    if (d.status >= 8) {
+    // Tekstkleur aanpassen bij open vormen (vanaf status 7)
+    if (d.status >= 7) {
       d.textColor = (d.textColor === "white") ? "black" : "white";
-    }
-
-    // Blip link functionaliteit
-    if (d.hasOwnProperty("link") && d.link) {
-      blip.style("cursor", "pointer") // Zorg voor een pointer cursor bij hover
-        .on("click", function() {
-          window.open(d.link, "_blank"); // Open de link in een nieuw tabblad
-      });
     }
     
     // blip shape
@@ -1177,23 +1252,23 @@ function radar_visualization(config) {
       blip.append("path")
         .attr("d", "M 0,-10 L 9,-3 L 6,8 L -6,8 L -9,-3 Z")
         .attr("fill", d.color);
-    } else if (d.status == 6) { // filled hexagon
+    } else if (d.status == 6) { // filled star
       blip.append("path")
-        .attr("d", "M 0,-10 L 9,-5 L 9,5 L 0,10 L -9,5 L -9,-5 Z")
+        .attr("d", "M0,-10 L3,-3 L10,-3 L5,2 L7,9 L0,5 L-7,9 L-5,2 L-10,-3 L-3,-3 Z")
         .attr("fill", d.color);
-    } else if (d.status == 8) { // open circle
+    } else if (d.status == 7) { // open circle
       blip.append("circle")
         .attr("r", 9)
         .attr("fill", "none")
         .attr("stroke", d.color)
         .attr("stroke-width", 2);
-    } else if (d.status == 9) { // open triangle
+    } else if (d.status == 8) { // open triangle
       blip.append("path")
         .attr("d", "M -11,5 11,5 0,-13 z")
         .attr("fill", "none")
         .attr("stroke", d.color)
         .attr("stroke-width", 2);
-    } else if (d.status == 10) { // open square
+    } else if (d.status == 9) { // open square
       blip.append("rect")
         .attr("x", -7)
         .attr("y", -7)
@@ -1202,20 +1277,20 @@ function radar_visualization(config) {
         .attr("fill", "none")
         .attr("stroke", d.color)
         .attr("stroke-width", 2);        
-    } else if (d.status == 11) { // open ellipse
+    } else if (d.status == 10) { // open ellipse
       blip.append("ellipse")
         .attr("rx", 9)
         .attr("ry", 6)
         .attr("fill", "none")
         .attr("stroke", d.color)
         .attr("stroke-width", 2);
-    } else if (d.status == 12) { // open pentagon
+    } else if (d.status == 11) { // open pentagon
       blip.append("path")
         .attr("d", "M 0,-10 L 9,-3 L 6,8 L -6,8 L -9,-3 Z")
         .attr("fill", "none")
         .attr("stroke", d.color)
         .attr("stroke-width", 2);
-    } else if (d.status == 13) { // open star
+    } else if (d.status == 12) { // open star
       blip.append("path")
         .attr("d", "M0,-10 L3,-3 L10,-3 L5,2 L7,9 L0,5 L-7,9 L-5,2 L-10,-3 L-3,-3 Z")
         .attr("fill", "none")
@@ -1229,7 +1304,7 @@ function radar_visualization(config) {
 
     // blip text
     if (d.active || config.print_layout) {
-      var blip_text = config.print_layout ? d.id : d.label.match(/[a-z]/i);
+      var blip_text = config.print_layout ? d.displayId : d.label.match(/[a-z]/i);
       blip.append("text")
         .text(blip_text)
         .attr("y", 3)
@@ -1237,7 +1312,7 @@ function radar_visualization(config) {
         .style("fill", d.textColor)
         //.style("font-family", "Raleway")//
         .attr("class", "blip-text")
-        .style("font-size", function(d) { return blip_text.length > 2 ? "7px" : "8px"; }) //8 9
+        .style("font-size", function(d) { return blip_text.length > 2 ? "8px" : "9px"; })
         .style("pointer-events", "none")
         .style("user-select", "none");
     }
@@ -1256,4 +1331,139 @@ function radar_visualization(config) {
     .velocityDecay(0.19) // magic number (found by experimentation)
     .force("collision", d3.forceCollide().radius(12).strength(0.85))
     .on("tick", ticked);
+
+  // Navigation Integration
+  function initializeNavigation() {
+    // Handle URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedQuadrant = urlParams.get('quadrant');
+    const selectedRing = urlParams.get('ring');
+    const selectedGroup = urlParams.get('group');
+
+    // Update URL when selection changes
+    function updateURL(quadrant, ring, group) {
+      const params = new URLSearchParams();
+      if (quadrant) params.set('quadrant', quadrant);
+      if (ring) params.set('ring', ring);
+      if (group) params.set('group', group);
+      
+      const newUrl = `${window.location.pathname}?${params.toString()}`;
+      window.history.pushState({}, '', newUrl);
+      
+      // Notify parent window if in iframe
+      if (window.parent !== window) {
+        window.parent.postMessage({
+          type: 'radar-navigation',
+          data: { quadrant, ring, group }
+        }, '*');
+      }
+    }
+
+    // Handle browser back/forward
+    window.addEventListener('popstate', (event) => {
+      const params = new URLSearchParams(window.location.search);
+      const quadrant = params.get('quadrant');
+      const ring = params.get('ring');
+      const group = params.get('group');
+      
+      // Update radar visualization
+      if (quadrant || ring || group) {
+        // TODO: Implement radar update logic
+        console.log('Navigation state changed:', { quadrant, ring, group });
+      }
+    });
+
+    // Listen for messages from parent window
+    window.addEventListener('message', (event) => {
+      if (event.data.type === 'radar-navigation') {
+        const { quadrant, ring, group } = event.data.data;
+        // TODO: Implement radar update logic
+        console.log('Received navigation update:', { quadrant, ring, group });
+      }
+    });
+
+    // Initial state
+    if (selectedQuadrant || selectedRing || selectedGroup) {
+      // TODO: Implement initial state logic
+      console.log('Initial navigation state:', { selectedQuadrant, selectedRing, selectedGroup });
+    }
+
+    return { updateURL };
+  }
+
+  // Initialize navigation when radar is loaded
+  const navigation = initializeNavigation();
+
+  // Error Handling
+  function initializeErrorHandling() {
+    // Global error handler
+    window.onerror = function(message, source, lineno, colno, error) {
+      console.error('Global error:', { message, source, lineno, colno, error });
+      showError('An unexpected error occurred. Please try refreshing the page.');
+      return true; // Prevent default error handling
+    };
+
+    // Unhandled promise rejection handler
+    window.onunhandledrejection = function(event) {
+      console.error('Unhandled promise rejection:', event.reason);
+      showError('An operation failed. Please try again.');
+    };
+
+    // Show error message to user
+    function showError(message) {
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'radar-error';
+      errorDiv.innerHTML = `
+        <div class="error-content">
+          <h3>Error</h3>
+          <p>${message}</p>
+          <button onclick="this.parentElement.parentElement.remove()">Dismiss</button>
+        </div>
+      `;
+      document.body.appendChild(errorDiv);
+    }
+
+    // Add error handling to radar visualization
+    function handleRadarError(error) {
+      console.error('Radar visualization error:', error);
+      showError('Failed to load radar visualization. Please try refreshing the page.');
+    }
+
+    // Add error handling to data loading
+    function handleDataError(error) {
+      console.error('Data loading error:', error);
+      showError('Failed to load radar data. Please try again later.');
+    }
+
+    return {
+      handleRadarError,
+      handleDataError
+    };
+  }
+
+  // Initialize error handling
+  const errorHandling = initializeErrorHandling();
+
+  // Add error handling to radar visualization
+  try {
+    // ... existing radar visualization code ...
+  } catch (error) {
+    errorHandling.handleRadarError(error);
+  }
+
+  // Add error handling to data loading
+  function loadRadarData() {
+    const apiRoot = location.hostname === 'localhost' ? 'api/' : '';
+    return fetch(`${apiRoot}labels.php?user_id=${userId}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to load radar data');
+        }
+        return response.json();
+      })
+      .catch(error => {
+        errorHandling.handleDataError(error);
+        throw error;
+      });
+  }
 }

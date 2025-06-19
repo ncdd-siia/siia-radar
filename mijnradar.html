@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Mijn Radar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="radar.css">
+  <style>
+    #edit-mode-toggle{margin-left:15px;padding:5px 10px;border:1px solid #007351;border-radius:4px;cursor:pointer}
+    #add-label-btn{margin-left:10px;padding:5px 10px;border:1px solid #007351;background:#007351;color:#fff;border-radius:4px;cursor:pointer}
+    #backup-btn,#restore-btn{margin-left:10px;padding:5px 10px;border:1px solid #555;background:#555;color:#fff;border-radius:4px;cursor:pointer}
+    /* Modal styles (copied from index) */
+    .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); display:none; justify-content: center; align-items: center; z-index:1000; }
+    .modal-content { background: white; padding: 25px; border-radius:8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); width:90%; max-width:500px; position:relative; }
+    .modal-close-btn { position:absolute; top:10px; right:10px; background:none; border:none; font-size:1.5rem; cursor:pointer; line-height:1; }
+    
+    /* Quick Action Menu vertical layout */
+    #quick-label-menu .header-btn {
+      display: block;
+      margin-bottom: 8px;
+    }
+     #quick-label-menu .header-btn:last-of-type {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+<div style="padding:10px;">
+    <button id="home-btn" style="padding:5px 10px;border:1px solid var(--kleur-doing);background:var(--kleur-doing);color:#fff;">← Terug naar voorbeeldradar</button>
+</div>
+<div style="text-align:center;margin:20px;position:relative;">
+  <h1>Mijn Radar</h1>
+  <div id="user-menu" style="position:absolute;top:10px;right:10px;">
+    <button id="add-label-btn">Nieuw label toevoegen</button>
+    <button id="backup-btn">Download JSON</button>
+    <button id="restore-btn">Upload JSON</button>
+    <input type="file" id="restore-input" style="display:none" accept="application/json" />
+  </div>
+</div>
+
+<svg id="radar" width="1700" height="900" style="display:block;margin:auto;"></svg>
+
+<!-- Volledige tekstblok identiek aan index.html -->
+<div class="center-box">
+  <div class="column">
+    <h3>Wat is de SIIA-radar</h3>
+    <p>
+    De <em>Sustainable IT Impact Assessment Radar</em>, de SIIA-Radar, is onderdeel van het </a href="https://siia.coalitieduurzamedigitalisering.nl">Sustainable IT Impact Assessment</a> van de <a href="https://www.coalitieduurzamedigitalisering.nl">Nederlandse Coalitie Duurzame Digitalisering</a>
+    </p>
+    <p>
+      De SIIA-Radar bevat een lijst van activiteiten om de IT te verduurzamen en de processen in de organisatie die de IT ondersteunt. De activiteiten worden geplaatst in een <em>ring</em>. Er zijn vier ringen met de volgende karakteristieken:
+    </p>
+    <ul>
+    <li><strong style="color: var(--kleur-doing)">DOING</strong> &mdash; Dit zien we graag en hebben we doorgevoerd.</li>
+    <li><strong style="color: var(--kleur-ongoing)">ONGOING</strong> &mdash; Hier zijn we mee bezig en <em>willen</em> we overal gaan doorvoeren. </li>
+    <li><strong style="color: var(--kleur-planning)">PLANNING</strong> &mdash; Dit onderzoeken we en <em>kan</em> interessant zijn.  </li>
+    <li><strong style="color: var(--kleur-undoing)">UNDOING</strong> &mdash; Dit is verleden tijd en kan <em>écht</em> niet meer.</li>
+    </ul>
+  
+    <h3>Wat is het doel?</h3>
+    <p>
+    De SIIA-radar is bedoeld om organisaties te helpen om de IT zo in te richten dat die  helpt om te verduurzamen en de IT zelf te verduurzamen.
+    </p>
+    <p>
+    De SIIA-radar geeft een overzicht van de activiteiten die daarvoor nodig zijn en de prioriteiten daarin. Het helpt om alignment te creëren binnen organisatie rondom het thema duurzaamheid. 
+    </p>
+    <p>
+    De activiteiten staan in 4 kwadranten: 
+    <ul>
+    <li>verduurzamen van de <strong>organisatie</strong>: business-model, doelen en strategie</li>
+    <li>verduurzamen van de <strong>IT</strong></li>
+    <li>verduurzamen van de <strong>processen</strong> in de organisatie</li>
+    <li>verduurzamen van de <strong>werkvloer</strong>: alles wat nodig is om het (IT-)werk  te kunnen doen. Zoals: reizen, telefoon en laptop, eten en drinken, gebouw en meubilair, verwarming en verlichting, thuiswerken. </li>
+   </ul>
+    </p>
+    <h3>Waar komt de informatie in de radar vandaan?</h3>
+    <p>
+    De items in deze radar zijn afkomstig  van de duurzaamheidsradar van <a href="https://www.duurzaamheidsradar.wigo4it.nl">WiGo4IT</a>, die intern al een aantal jaren de analyse heeft gedaan hoe ze moeten verduurzamen. 
+    </p>
+    <p>
+    WiGo4IT is een dienstverlener, in 2004 opgericht door gemeenten, om mensen van uitkeringen te voorzien. Per maand doet WiGo4IT meer dan 100.000 betalingen en in al die jaren is dat altijd precies op tijd gelukt. De organisatie telt zo'n 70 medewerkers. De werkcultuur van WiGo4IT is in de duurzaamheidsradar terug te vinden: het is een organisatie die de nadruk legt op autonomie en eigen verantwoordelijkheid. En veel van de activiteiten helpen de eigen medewerkers, maar ook hun klanten, de gemeenten, om die verantwoordelijkheid voor duurzaamheid te nemen.
+    </p>
+    </div>
+    <div class="column">
+    
+    <h3>Wie bepaalt de prioriteiten in de radar?</h3>
+    <p>
+      De inhoud van de SIIA-radar wordt vastgesteld door de personen die verantwoordelijk zijn voor het verduurzamen van de organisatie. In een agile werkende organisatie zullen dat de Sustainable Champions zijn. Het is de bedoeling dat teamleden in gesprek gaan als er iets verkeerd of niet op staat.
+      
+      Om de SIIA-radar te vullen kunnen drie routes worden bewandeld:
+        <ul>
+        <li>Je hebt  ideeën om de IT en de processen die de IT ondersteunt te verduurzamen: bijvoorbeeld het energieverbruik te verminderen, de GHG emissies te verlagen, de milieu- en sociale impact van de IT te verminderen door apparatuur te verminderen. Kijk dan in hoofdstuk <strong>'Doe'</strong> van de SIIA. Je gaat dan onderzoeken waar jullie staan wat duurzaamheid van IT en de processen die de IT ondersteunt, waar je naar toe wilt wat duurzaamheid betreft en wat daarvoor moet gebeuren. Van daaruit ga je kijken wat nodig is om de IT betrouwbaar, flexibel en veilig te houden als je aan de slag gaat met verduurzamen. Kijk daarvoor in het hoofdstuk <strong>'Organiseer'</strong>. 
+        Bij de verduurzaming komen waarschijnlijk nieuwe vragen op: is er behoefte aan de organisatie in een verduurzamende samenleving en economie? Hoe zorg je dat klanten graag zaken met je doen, als je verduurzaamt? Hoe belangrijk is verduurzaming om medewerkers aan te trekken, voor financiers of andere belanghebbenden. Kijk voor deze vragen in het hoofdstuk <strong>'Denk' </strong></li>
+        <li>De organisatie waar je werkt wil verduurzamen en jij bent verantwoordelijk voor de IT en de duurzaamheid daarvan. Hoe breng je in kaart welke IT nodig is, om de verduurzamende organisatie te ondersteunen. Misschien is de IT belemmerend en zijn veranderingen noodzakelijk. Kijk dan in het hoofdstuk <strong>'Organiseer'van de SIIA</strong></li>
+        <li>Je bent verantwoordelijk om de organisatie te verduurzamen en je wilt je daar daar over kunnen verantwoorden. Misschien om morele redenen, om juridische redenen (de Europese CSRD, de Corporate Governance Code) of omdat je afnemers of toeleveranciers dat van je vragen. Je vraagt je af waar je moet beginnen: moet het businessmodel aangepast, de strategie, wat moet er dan allemaal veranderen in de organisatie? Begin dan in het hoofdstuk <strong>'Denk'</strong> van de SIIA</li>
+        <li>Je bent verantwoordelijk voor de rapportage naar klanten en andere belanghebbenden (toezichthouders, financiers, bestuurders) over de verduurzaming van de organisatie. De SIIA loopt alle hoofdstukken door van de rapportage. Te beginnen met het onderzoek naar de impact op duurzaamheid van de organisatie en wat de kansen en bedreigingen zijn als de economie en samenleving verduurzaamt. Dan de aanpassingen die nodig zijn en de risico's en onzekerheden die de transformatie naar duurzaamheid hinderen en hoe die worden beheerst. Vervolgens gaat de SIIA in op de eisen die aan de IT gesteld moeten worden om deze transitie te verduurzamen te ondersteunen en daarbij zelf duurzaam, veilig, betrouwbaar en flexibel te blijven. Tenslotte laat de SIIA verschillende best practices zien om aspecten van de organisatie te verduurzamen: de inkoop, het energieverbruik, de emissies enz.</li>
+        </ul>      
+    </p>
+    <p>
+      Vorige versies kan je hier vinden: <a href="changelog.html">Changelog</a>
+    </p>
+    <p>
+      <em>Gebaseerd op: <a href="https://duurzaamheidsradar.wigo4it.nl">WiGo4IT Duurzaamheidsradar</a> & <a href="https://www.thoughtworks.com/radar">ThoughtWorks</a> & <a href="https://github.com/zalando/tech-radar"> Zalando TechRadar</a></em>
+    </p>
+  </div>
+</div>
+
+<!-- Descriptive text (reused from main page, truncated) -->
+<div class="center-box" style="max-width:1000px;margin:40px auto;font-family:Arial,Helvetica,sans-serif;">
+  <p>Gebruik deze persoonlijke radar om je eigen labels te beheren. Je kunt je data downloaden als JSON of later weer uploaden.</p>
+</div>
+
+<!-- Add/Edit Label Modal (copied & trimmed) -->
+<div id="label-modal" class="modal-overlay">
+  <div class="modal-content">
+    <button class="modal-close-btn" onclick="closeModal()">&times;</button>
+    <h3 id="modal-title">Label Details</h3>
+    <form id="label-form">
+      <input type="hidden" id="label-id">
+      <div><label>Label:</label><input type="text" id="label-name" required></div>
+      <div><label>Quadrant:</label><select id="label-quadrant" required></select></div>
+      <div><label>Ring:</label><select id="label-ring" required></select></div>
+      <div><label>Theme:</label>
+           <select id="label-theme" required></select>
+      </div>
+      <div style="margin-top:20px;text-align:right;">
+        <button type="button" onclick="closeModal()">Cancel</button>
+        <button type="button" id="delete-label-btn" style="float:left;display:none;">Delete</button>
+        <button type="submit">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Quick Action Menu for Labels -->
+<div id="quick-label-menu" style="display:none; position:fixed; z-index:2000; background:white; border:1px solid #ccc; box-shadow:0 4px 12px rgba(0,0,0,0.15); padding:12px; border-radius: 6px;">
+  <button id="qlm-wiki" class="header-btn">📖 Wiki</button>
+  <button id="qlm-edit" class="header-btn">✏️ Label bewerken</button>
+  <button id="qlm-close" class="modal-close-btn" style="position:absolute; top:2px; right:5px;">&times;</button>
+</div>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>window.enableQuickMenu = true;</script>
+<script src="radar.js"></script>
+<script>
+const LOCAL_KEY = 'MY_RADAR_LABELS_V1';
+
+/* --- one-time link migration --- */
+(() => {
+  let arr = [];
+  try { arr = JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]'); } catch {}
+  let changed = false;
+  arr.forEach(l => {
+    if (l.link && l.link.includes('wiki_local.html')) {
+      l.link = l.link.replace('wiki_local.html', 'WIKI-LOCAL.html');
+      changed = true;
+    }
+  });
+  if (changed) localStorage.setItem(LOCAL_KEY, JSON.stringify(arr));
+})();
+/* --- end migration --- */
+
+// Global config (copied from index.html)
+window.lastLoadedConfig = {
+  title:'Mijn Radar',entries:[],uniqueGroups:[
+   "1. Minder Hardware",
+   "2. Carbonaware",
+   "3. Minder Energie",
+   "4. Minder Gebruik",
+   "5. Software",
+   "6. Data",
+   "7. Medewerker",
+   "8. Organisatie"
+  ],editMode:false,
+  quadrants:[{name:"IT voor verduurzaming"},{name:"Duurzaam Werken"},{name:"Duurzame Organisatie"},{name:"Duurzame IT"}],
+  rings:[{name:"DOING"},{name:"ONGOING"},{name:"PLANNING"},{name:"UNDOING"}]
+};
+
+function loadLocalLabels(){
+  try{ return JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]'); }catch(e){return []}
+}
+function saveLocalLabels(arr){ localStorage.setItem(LOCAL_KEY,JSON.stringify(arr)); }
+
+function loadAndDisplayRadar(){
+  let entries = loadLocalLabels();
+  // Assign displayId like main page
+  const seg = [[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]]];
+  entries.forEach(e=>{ if(seg[e.quadrant] && seg[e.quadrant][e.ring]) seg[e.quadrant][e.ring].push(e);});
+  let d=1; for(const q of [2,3,1,0]){for(let r=0;r<4;r++){for(const e of seg[q][r])e.displayId=d++;}}
+  window.lastLoadedConfig.entries = entries;
+  window.lastLoadedConfig.uniqueGroups = [...new Set([...window.lastLoadedConfig.uniqueGroups, ...entries.map(e=>e.group)])];
+  radar_visualization(window.lastLoadedConfig);
+}
+
+// --- Initial page load ---
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('home-btn').onclick = () => location.href = 'index.html';
+    document.getElementById('add-label-btn').onclick = () => openModal();
+    document.getElementById('backup-btn').onclick = () => {
+        const labelsJson = localStorage.getItem(LOCAL_KEY) || '[]';
+        const wikiEntries = {};
+        Object.keys(localStorage).forEach(k => {
+            if (k.startsWith('WIKI_')) wikiEntries[k] = localStorage.getItem(k);
+        });
+        const payload = { labels: JSON.parse(labelsJson), wikis: wikiEntries };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'my-radar-backup.json';
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+    document.getElementById('restore-btn').onclick = () => document.getElementById('restore-input').click();
+    document.getElementById('restore-input').onchange = e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+            try {
+                const data = JSON.parse(ev.target.result);
+                if (Array.isArray(data)) {
+                    saveLocalLabels(data);
+                } else {
+                    if (Array.isArray(data.labels)) saveLocalLabels(data.labels);
+                    if (data.wikis && typeof data.wikis === 'object') {
+                        Object.keys(data.wikis).forEach(k => localStorage.setItem(k, data.wikis[k]));
+                    }
+                }
+                loadAndDisplayRadar();
+            } catch (err) {
+                alert('Invalid JSON');
+            }
+        };
+        reader.readAsText(file);
+    };
+    
+    loadAndDisplayRadar();
+});
+
+// --- Quick Label Menu Logic ---
+const quickMenu = document.getElementById('quick-label-menu');
+const qlmWikiBtn = document.getElementById('qlm-wiki');
+const qlmEditBtn = document.getElementById('qlm-edit');
+const qlmCloseBtn = document.getElementById('qlm-close');
+
+function showQuickMenu(labelData, event) {
+    event.stopPropagation(); // Prevent window-click from hiding menu immediately
+   // event.preventDefault(); // ← blokkeer standaard navigatie<br>  …<br>}``` | De browser volgt de `<a>` niet meer; alleen het menu verschijnt. |
+    quickMenu.style.left = `${event.clientX + 5}px`;
+    quickMenu.style.top = `${event.clientY + 5}px`;
+    quickMenu.style.display = 'block';
+
+    qlmWikiBtn.onclick = () => {
+        if (labelData.link) {
+            window.location.href = labelData.link;
+        }
+    };
+
+    qlmEditBtn.onclick = () => {
+        quickMenu.style.display = 'none';
+        openModal(labelData); // Re-use the existing modal for editing
+    };
+}
+
+qlmCloseBtn.onclick = () => quickMenu.style.display = 'none';
+
+// Hide menu if clicking outside of it
+window.addEventListener('click', (e) => {
+    if (quickMenu.style.display === 'block' && !quickMenu.contains(e.target)) {
+        quickMenu.style.display = 'none';
+    }
+});
+
+// --- Modal functions (full form) ---
+function openModal(d) {
+  const isEditing = d !== undefined && d !== null;
+
+  const modal = document.getElementById('label-modal');
+  const modalTitle = document.getElementById('modal-title');
+  const labelIdInput = document.getElementById('label-id');
+  const labelNameInput = document.getElementById('label-name');
+  const labelQuadrantSelect = document.getElementById('label-quadrant');
+  const labelRingSelect = document.getElementById('label-ring');
+  const labelThemeSelect = document.getElementById('label-theme');
+  const deleteButton = document.getElementById('delete-label-btn');
+
+  modalTitle.textContent = isEditing ? 'Edit Label' : 'Add New Label';
+
+  labelIdInput.value = isEditing ? d.id : '';
+  labelNameInput.value = isEditing ? d.label : '';
+
+  // Populate quadrants
+  labelQuadrantSelect.innerHTML = '';
+  window.lastLoadedConfig.quadrants.forEach((q, idx) => {
+    const opt = document.createElement('option');
+    opt.value = idx;
+    opt.textContent = `${idx+1}: ${q.name}`;
+    if (isEditing && d.quadrant === idx) opt.selected = true;
+    labelQuadrantSelect.appendChild(opt);
+  });
+
+  // Populate rings
+  labelRingSelect.innerHTML = '';
+  window.lastLoadedConfig.rings.forEach((r, idx) => {
+    const opt = document.createElement('option');
+    opt.value = idx;
+    opt.textContent = `${idx+1}: ${r.name}`;
+    if (isEditing && d.ring === idx) opt.selected = true;
+    labelRingSelect.appendChild(opt);
+  });
+
+  // Populate themes datalist
+  labelThemeSelect.innerHTML = '';
+  const themes = [...new Set(window.lastLoadedConfig.uniqueGroups)];
+  themes.forEach(theme => {
+    const opt = document.createElement('option');
+    opt.value = theme;
+    opt.textContent = theme;
+    if(isEditing && d.group === theme) opt.selected = true;
+    labelThemeSelect.appendChild(opt);
+  });
+
+  deleteButton.style.display = isEditing ? 'inline-block' : 'none';
+  modal.style.display = 'flex';
+}
+
+function closeModal() { document.getElementById('label-modal').style.display = 'none'; }
+
+document.getElementById('label-form').onsubmit = (e) => {
+  e.preventDefault();
+  const idField = document.getElementById('label-id');
+  const isEditing = idField.value !== '';
+
+  const newId = isEditing ? idField.value : Date.now();
+  const newObj = {
+    id: newId,
+    label: document.getElementById('label-name').value,
+    quadrant: +document.getElementById('label-quadrant').value,
+    ring: +document.getElementById('label-ring').value,
+    group: document.getElementById('label-theme').value,
+    link: `WIKI-LOCAL.html?id=${newId}`,
+    moved: 0,
+    active: true
+  };
+
+  let arr = loadLocalLabels();
+  if (isEditing) {
+    const idx = arr.findIndex(l => l.id == newObj.id);
+    if (idx > -1) arr[idx] = newObj;
+  } else {
+    arr.push(newObj);
+  }
+  // ensure every entry has a wiki link
+  arr.forEach(l=>{ if(!l.link || l.link==='#') l.link = `WIKI-LOCAL.html?id=${l.id}`;});
+  saveLocalLabels(arr);
+  // make sure new group is added to uniqueGroups for later sessions
+  window.lastLoadedConfig.uniqueGroups = [...new Set([...window.lastLoadedConfig.uniqueGroups, newObj.group])];
+  closeModal();
+  loadAndDisplayRadar();
+};
+
+document.getElementById('delete-label-btn').onclick = () => {
+  const id = document.getElementById('label-id').value;
+  if (!id || !confirm('Delete?')) return;
+  let arr = loadLocalLabels().filter(l => l.id != id);
+  saveLocalLabels(arr);
+  closeModal();
+  loadAndDisplayRadar();
+};
+
+// Enable editing existing blip by double-click
+document.addEventListener('dblclick', (e) => {
+  if (!window.lastLoadedConfig.editMode) return;
+  if (!e.target.classList.contains('blip-background')) return;
+  openModal(e.target.__data__);
+});
+
+// Right-click delete remains
+document.addEventListener('contextmenu', e => {
+  if (!window.lastLoadedConfig.editMode) return;
+  if (!e.target.classList.contains('blip-background')) return;
+  e.preventDefault();
+  const id = +e.target.__data__.id;
+  if (!confirm('Delete this label?')) return;
+  let arr = loadLocalLabels().filter(l => l.id !== id);
+  saveLocalLabels(arr);
+  loadAndDisplayRadar();
+});
+</script>
+</body>
+</html>

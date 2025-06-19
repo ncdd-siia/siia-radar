@@ -9,6 +9,11 @@ body {
     align-items: flex-start;
     padding: 20px;
     gap: 20px;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
 }
 
 /* Stijl voor de inhoudsopgave aan de rechterkant */
@@ -55,5 +60,94 @@ body {
     color: black; /*white;*/
     background-color: #f2f8f6; /*#005452;*/
     max-width: 800px; /* Beperk de breedte voor leesbaarheid */
+}
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+    margin: 20px auto;
+    max-width: 1200px;
+}
+
+.toc {
+    flex: 0 0 250px;
+    margin-right: 20px;
+    padding-right: 20px;
+    border-right: 1px solid #ddd;
+}
+
+.content {
+    flex-grow: 1;
+    max-width: 800px;
+}
+
+/* Header Styles */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+.header-left {
+    display: flex;
+    gap: 10px;
+}
+
+.header-right .logo {
+    height: 50px;
+}
+
+.header-btn {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.header-btn:hover {
+    background-color: #e0e0e0;
+}
+
+/* Typography and Links */
+h1, h2, h3 {
+    border-bottom: 1px solid #eaecef;
+    padding-bottom: .3em;
+}
+
+a {
+    color: #0366d6;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* TOC Specifics */
+.toc ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.toc li a {
+    display: block;
+    padding: 4px 0;
+    color: #586069;
+}
+.toc li a:hover {
+    color: #0366d6;
+}
+
+/* EasyMDE Editor Customizations */
+.editor-toolbar {
+    border-color: #ddd;
+}
+
+.CodeMirror {
+    border-color: #ddd;
+    min-height: 400px;
 }
 

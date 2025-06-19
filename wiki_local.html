@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
+    <title>SIIA Wiki</title>
+    <link rel="stylesheet" href="wiki.css">
+    <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+<header style="position:relative;height:60px;">
+   <a href="mijnradar.html" style="position:absolute;left:10px;top:10px;">← Terug naar Radar</a>
+   <img src="SIIA_logo.jpg" alt="SIIA Logo" style="height:50px;position:absolute;right:10px;top:5px;">
+</header>
+<div id="wiki-status-notice" style="text-align:center;padding:5px;margin-bottom:10px;background:#eef;border-radius:4px;display:none;"></div>
+<div id="edit-controls" style="padding:10px 20px;">
+    <button id="edit-wiki-btn" onclick="toggleEditMode()" style="display:none;">Edit Content</button>
+</div>
+<div id="toc-container"></div>
+<div id="wiki-container"></div>
+<div id="wiki-edit-container" style="display:none;padding:0 20px 20px;">
+    <textarea id="wiki-editor"></textarea>
+    <div style="margin-top:10px;">
+        <button id="save-wiki-btn" onclick="saveWikiContent()" style="display:none;">Save Changes</button>
+        <button onclick="toggleEditMode()">Cancel</button>
+    </div>
+</div>
+
+<script>
+// --- State ---
+let isLoggedIn = true; // personal workspace – always editable
+let isEditMode = false;
+let pageId = null;
+let rawMarkdownContent = '';
+let easyMDE = null;
+
+// --- Helpers ---
+function addAnchors(){
+    document.querySelectorAll('#wiki-container h1, h2, h3, h4, h5, h6').forEach(h=>{
+        const id = h.innerText.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+        h.id=id;
+    });
+}
+function genTOC(){
+    const toc=document.getElementById('toc-container');
+    toc.innerHTML='<h2>Inhoudsopgave</h2><ul></ul>';
+    const ul=toc.querySelector('ul');
+    document.querySelectorAll('#wiki-container h1, h2, h3').forEach(h=>{
+        const li=document.createElement('li');
+        li.innerHTML=`<a href="#${h.id}">${h.innerText}</a>`;
+        ul.appendChild(li);
+    });
+}
+
+function toggleEditMode(){
+    if(!isLoggedIn) return;
+    isEditMode=!isEditMode;
+    document.getElementById('wiki-container').style.display=isEditMode?'none':'block';
+    document.getElementById('wiki-edit-container').style.display=isEditMode?'block':'none';
+    document.getElementById('save-wiki-btn').style.display=isEditMode?'inline-block':'none';
+    document.getElementById('edit-wiki-btn').textContent=isEditMode?'View Content':'Edit Content';
+    if(isEditMode){
+        if(!easyMDE){
+            easyMDE = new EasyMDE({ element: document.getElementById('wiki-editor'), spellChecker:false, initialValue:rawMarkdownContent });
+        } else {
+            easyMDE.value(rawMarkdownContent);
+        }
+    }
+}
+
+function saveWikiContent(){
+    if(!easyMDE) return;
+    rawMarkdownContent = easyMDE.value();
+    localStorage.setItem('WIKI_'+pageId, rawMarkdownContent);
+    renderMarkdown();
+    toggleEditMode();
+}
+
+function renderMarkdown(){
+    const html = marked.parse(rawMarkdownContent||'*Deze pagina is nog leeg.*');
+    document.getElementById('wiki-container').innerHTML=html;
+    addAnchors();
+    genTOC();
+}
+
+// --- Init ---
+window.addEventListener('DOMContentLoaded',()=>{
+    pageId = new URLSearchParams(location.search).get('id');
+    if(!pageId){ document.getElementById('wiki-container').innerText='Invalid id'; return; }
+    rawMarkdownContent = localStorage.getItem('WIKI_'+pageId)||'';
+    renderMarkdown();
+    document.getElementById('edit-wiki-btn').style.display='inline-block';
+});
+</script>
+</body>
+</html> 

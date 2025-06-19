@@ -84,6 +84,15 @@
             });
         }
 
+        // Render the current markdown into HTML and rebuild anchors / TOC
+        function renderView() {
+            const wikiContainer = document.getElementById('wiki-container');
+            if (!wikiContainer) return;
+            wikiContainer.innerHTML = marked.parse(rawMarkdownContent || '');
+            addAnchorsToHeadings();
+            generateTOC();
+        }
+
         // Edit Mode Toggling
         function toggleEditMode() {
             if (!isLoggedIn) return; 
@@ -226,36 +235,82 @@
         // --- End Moved Functions ---
 
         document.addEventListener('DOMContentLoaded', async function () {
-            await checkAuthStatus(); // Check login status first
+            // This script is for the local wiki, so we can remove auth checks and simplify.
+            console.log("Initializing local wiki page...");
 
-            console.log("[DEBUG] window.location.href:", window.location.href); // Log the full URL
             const params = new URLSearchParams(window.location.search);
-            const titleParam = params.get('title');
-            if(!titleParam){
-               document.getElementById('wiki-container').innerHTML = 'No label title specified in URL.';
+            const pageId = params.get('id'); 
+            const RADAR_DATA_KEY = 'MY_RADAR_LABELS_V1';
+
+            if(!pageId){
+               document.getElementById('wiki-container').innerHTML = '<div style="padding:2em;font-weight:bold;color:red;">Error: No page ID specified in the URL.</div>';
                return;
             }
+            
+            const storageKey = `WIKI_${pageId}`;
+            const allLabels = JSON.parse(localStorage.getItem(RADAR_DATA_KEY) || '[]');
+            const currentLabel = allLabels.find(label => String(label.id) === pageId);
 
-            // Slugify the title to construct markdown filename
-            const slug = titleParam.toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-            const mdPath = `wiki/${slug}.md`;
-            try{
-               const resp = await fetch(mdPath);
-               if(!resp.ok) throw new Error(`Not found: ${mdPath}`);
-               rawMarkdownContent = await resp.text();
-            }catch(err){
-               document.getElementById('wiki-container').innerHTML = `<div style="padding:2em; color:red;">Error loading markdown: ${err.message}</div>`;
-               return;
+            const userContent = localStorage.getItem(storageKey);
+            if (userContent !== null) {
+                rawMarkdownContent = userContent;
+            } else if (currentLabel) {
+                 rawMarkdownContent = `# ${currentLabel.label}\n\nThis is a new local wiki page. Click 'Bewerk pagina' to add your content.`;
+            } else {
+                rawMarkdownContent = `# Error\n\nCould not pre-fill content because label with ID "${pageId}" was not found.`;
             }
 
-            // Render content
             const firstLine = rawMarkdownContent.split('\n')[0];
-            const pageTitle = firstLine.startsWith('# ')? firstLine.substring(2) : titleParam;
+            const pageTitle = firstLine.startsWith('# ') ? firstLine.substring(2) : (currentLabel ? currentLabel.label : pageId);
             document.title = pageTitle;
-            const htmlContent = marked.parse(rawMarkdownContent);
-            document.getElementById('wiki-container').innerHTML = htmlContent;
-            addAnchorsToHeadings();
-            generateTOC();
+            renderView();
+
+            document.getElementById('back-to-radar-btn').onclick = () => { window.location.href = 'mijnradar.html'; };
+
+            /* --- wire wiki edit buttons (new logic) --- */
+            const editBtn = document.getElementById('edit-page-btn');
+            const saveWikiBtn = document.getElementById('save-wiki-btn');
+            const cancelWikiBtn = document.getElementById('cancel-wiki-btn');
+            const editContainer = document.getElementById('wiki-edit-container');
+            const viewContainer = document.getElementById('wiki-container');
+            const wikiActions = document.getElementById('wiki-actions');
+
+            const enterEditMode = () => {
+                viewContainer.style.display = 'none';
+                wikiActions.style.display = 'none'; // Hide the top bar with "Bewerk pagina"
+                editContainer.style.display = 'block';
+                
+                if (!wikiEditorInstance) {
+                    wikiEditorInstance = new EasyMDE({
+                        element: document.getElementById('wiki-editor'),
+                        initialValue: rawMarkdownContent,
+                        spellChecker:false,
+                        lineWrapping:true
+                    });
+                } else {
+                    wikiEditorInstance.value(rawMarkdownContent);
+                }
+            };
+
+            const exitEditMode = () => {
+                editContainer.style.display = 'none';
+                viewContainer.style.display = 'block';
+                wikiActions.style.display = 'flex'; // Show the top bar again
+                renderView(); // Re-render to show any saved changes
+            };
+
+            editBtn.onclick = enterEditMode;
+
+            saveWikiBtn.onclick = () => {
+                rawMarkdownContent = wikiEditorInstance.value();
+                localStorage.setItem(storageKey, rawMarkdownContent);
+                exitEditMode();
+            };
+
+            cancelWikiBtn.onclick = () => {
+                // Don't save, just exit
+                exitEditMode();
+            };
         });
     </script>
 
@@ -300,6 +355,11 @@
        min-height: 400px; /* Apply min-height to CodeMirror */
        border: 1px solid #ccc; /* Add border back if needed */
     }
+    .edit-buttons {
+        margin-top: 15px;
+        display: flex;
+        gap: 10px;
+    }
 
 </style>
 </head>
@@ -312,11 +372,22 @@
 </header>
 
     <div style="padding:10px 20px;">
-        <a href="index.html" style="margin-left: 0;">← Back to Radar</a>
+        <a id="back-to-radar-btn" href="mijnradar.html" style="margin-left: 0;">← Terug naar radar</a>
     </div>
-    <div id="toc-container"></div> <!-- TOC-container voor de inhoudsopgave -->
-    <div id="wiki-container"></div>
-    <!-- edit UI removed for default wikis -->
+    <div id="toc-container" class="toc"></div>
+    <div id="wiki-container" class="content"></div>
+    <!-- action buttons below TOC -->
+    <div id="wiki-actions" style="margin:15px 0;display:flex;gap:10px;">
+        <button id="edit-page-btn" class="header-btn">Bewerk pagina</button>
+    </div>
+    <!-- hidden editor -->
+    <div id="wiki-edit-container" class="content" style="display:none;">
+        <textarea id="wiki-editor"></textarea>
+        <div class="edit-buttons">
+            <button id="save-wiki-btn" class="header-btn">Opslaan</button>
+            <button id="cancel-wiki-btn" class="header-btn">Wijzigingen annuleren</button>
+        </div>
+    </div>
 
 </body>
 
