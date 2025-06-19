@@ -41,7 +41,7 @@ WiGo4IT Kleuren:
 -->
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
 
@@ -50,9 +50,9 @@ WiGo4IT Kleuren:
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="theme-color" content="#ffffff">
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
 
-<title>SIIA</title>
+<title>SIIA Radar</title>
 
 <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
@@ -91,7 +91,7 @@ var configObj = {
     },
 };
 // Application Insights JavaScript (Web) SDK Loader Script code
-!(function (cfg){function e(){cfg.onInit&&cfg.onInit(n)}var x,w,D,t,E,n,C=window,O=document,b=C.location,q="script",I="ingestionendpoint",L="disableExceptionTracking",j="ai.device.";"instrumentationKey"[x="toLowerCase"](),w="crossOrigin",D="POST",t="appInsightsSDK",E=cfg.name||"appInsights",(cfg.name||C[t])&&(C[t]=E),n=C[E]||function(g){var f=!1,m=!1,h={initialize:!0,queue:[],sv:"8",version:2,config:g};function v(e,t){var n={},i="Browser";function a(e){e=""+e;return 1===e.length?"0"+e:e}return n[j+"id"]=i[x](),n[j+"type"]=i,n["ai.operation.name"]=b&&b.pathname||"_unknown_",n["ai.internal.sdkVersion"]="javascript:snippet_"+(h.sv||h.version),{time:(i=new Date).getUTCFullYear()+"-"+a(1+i.getUTCMonth())+"-"+a(i.getUTCDate())+"T"+a(i.getUTCHours())+":"+a(i.getUTCMinutes())+":"+a(i.getUTCSeconds())+"."+(i.getUTCMilliseconds()/1e3).toFixed(3).slice(2,5)+"Z",iKey:e,name:"Microsoft.ApplicationInsights."+e.replace(/-/g,"")+"."+t,sampleRate:100,tags:n,data:{baseData:{ver:2}},ver:undefined,seq:"1",aiDataContract:undefined}}var n,i,t,a,y=-1,T=0,S=["js.monitor.azure.com","js.cdn.applicationinsights.io","js.cdn.monitor.azure.com","js0.cdn.applicationinsights.io","js0.cdn.monitor.azure.com","js2.cdn.applicationinsights.io","js2.cdn.monitor.azure.com","az416426.vo.msecnd.net"],o=g.url||cfg.src,r=function(){return s(o,null)};function s(d,t){if((n=navigator)&&(~(n=(n.userAgent||"").toLowerCase()).indexOf("msie")||~n.indexOf("trident/"))&&~d.indexOf("ai.3")&&(d=d.replace(/(\/)(ai\.3\.)([^\d]*)$/,function(e,t,n){return t+"ai.2"+n})),!1!==cfg.cr)for(var e=0;e<S.length;e++)if(0<d.indexOf(S[e])){y=e;break}var n,i=function(e){var a,t,n,i,o,r,s,c,u,l;h.queue=[],m||(0<=y&&T+1<S.length?(a=(y+T+1)%S.length,p(d.replace(/^(.*\/\/)([\w\.]*)(\/.*)$/,function(e,t,n,i){return t+S[a]+i})),T+=1):(f=m=!0,s=d,!0!==cfg.dle&&(c=(t=function(){var e,t={},n=g.connectionString;if(n)for(var i=n.split(";"),a=0;a<i.length;a++){var o=i[a].split("=");2===o.length&&(t[o[0][x]()]=o[1])}return t[I]||(e=(n=t.endpointsuffix)?t.location:null,t[I]="https://"+(e?e+".":"")+"dc."+(n||"services.visualstudio.com")),t}()).instrumentationkey||g.instrumentationKey||"",t=(t=(t=t[I])&&"/"===t.slice(-1)?t.slice(0,-1):t)?t+"/v2/track":g.endpointUrl,t=g.userOverrideEndpointUrl||t,(n=[]).push((i="SDK LOAD Failure: Failed to load Application Insights SDK script (See stack for details)",o=s,u=t,(l=(r=v(c,"Exception")).data).baseType="ExceptionData",l.baseData.exceptions=[{typeName:"SDKLoadFailed",message:i.replace(/\./g,"-"),hasFullStack:!1,stack:i+"\nSnippet failed to load ["+o+"] -- Telemetry is disabled\nHelp Link: https://go.microsoft.com/fwlink/?linkid=2128109\nHost: "+(b&&b.pathname||"_unknown_")+"\nEndpoint: "+u,parsedStack:[]}],r)),n.push((l=s,i=t,(u=(o=v(c,"Message")).data).baseType="MessageData",(r=u.baseData).message='AI (Internal): 99 message:"'+("SDK LOAD Failure: Failed to load Application Insights SDK script (See stack for details) ("+l+")").replace(/\"/g,"")+'"',r.properties={endpoint:i},o)),s=n,c=t,JSON&&((u=C.fetch)&&!cfg.useXhr?u(c,{method:D,body:JSON.stringify(s),mode:"cors"}):XMLHttpRequest&&((l=new XMLHttpRequest).open(D,c),l.setRequestHeader("Content-type","application/json"),l.send(JSON.stringify(s)))))))},a=function(e,t){m||setTimeout(function(){!t&&h.core||i()},500),f=!1},p=function(e){var n=O.createElement(q),e=(n.src=e,t&&(n.integrity=t),n.setAttribute("data-ai-name",E),cfg[w]);return!e&&""!==e||"undefined"==n[w]||(n[w]=e),n.onload=a,n.onerror=i,n.onreadystatechange=function(e,t){"loaded"!==n.readyState&&"complete"!==n.readyState||a(0,t)},cfg.ld&&cfg.ld<0?O.getElementsByTagName("head")[0].appendChild(n):setTimeout(function(){O.getElementsByTagName(q)[0].parentNode.appendChild(n)},cfg.ld||0),n};p(d)}cfg.sri&&(n=o.match(/^((http[s]?:\/\/.*\/)\w+(\.\d+){1,5})\.(([\w]+\.){0,2}js)$/))&&6===n.length?(d="".concat(n[1],".integrity.json"),i="@".concat(n[4]),l=window.fetch,t=function(e){if(!e.ext||!e.ext[i]||!e.ext[i].file)throw Error("Error Loading JSON response");var t=e.ext[i].integrity||null;s(o=n[2]+e.ext[i].file,t)},l&&!cfg.useXhr?l(d,{method:"GET",mode:"cors"}).then(function(e){return e.json()["catch"](function(){return{}})}).then(t)["catch"](r):XMLHttpRequest&&((a=new XMLHttpRequest).open("GET",d),a.onreadystatechange=function(){if(a.readyState===XMLHttpRequest.DONE)if(200===a.status)try{t(JSON.parse(a.responseText))}catch(e){r()}else r()},a.send())):o&&r();try{h.cookie=O.cookie}catch(k){}function e(e){for(;e.length;)!function(t){h[t]=function(){var e=arguments;f||h.queue.push(function(){h[t].apply(h,e)})}}(e.pop())}var c,u,l="track",d="TrackPage",p="TrackEvent",l=(e([l+"Event",l+"PageView",l+"Exception",l+"Trace",l+"DependencyData",l+"Metric",l+"PageViewPerformance","start"+d,"stop"+d,"start"+p,"stop"+p,"addTelemetryInitializer","setAuthenticatedUserContext","clearAuthenticatedUserContext","flush"]),h.SeverityLevel={Verbose:0,Information:1,Warning:2,Error:3,Critical:4},(g.extensionConfig||{}).ApplicationInsightsAnalytics||{});return!0!==g[L]&&!0!==l[L]&&(e(["_"+(c="onerror")]),u=C[c],C[c]=function(e,t,n,i,a){var o=u&&u(e,t,n,i,a);return!0!==o&&h["_"+c]({message:e,url:t,lineNumber:n,columnNumber:i,error:a,evt:C.event}),o},g.autoExceptionInstrumented=!0),h}(cfg.cfg),(C[E]=n).queue&&0===n.queue.length?(n.queue.push(e),n.trackPageView({})):e();})({                
+!(function (cfg){function e(){cfg.onInit&&cfg.onInit(n)}var x,w,D,t,E,n,C=window,O=document,b=C.location,q="script",I="ingestionendpoint",L="disableExceptionTracking",j="ai.device.";"instrumentationKey"[x="toLowerCase"](),w="crossOrigin",D="POST",t="appInsightsSDK",E=cfg.name||"appInsights",(cfg.name||C[t])&&(C[t]=E),n=C[E]||function(g){var f=!1,m=!1,h={initialize:!0,queue:[],sv:"8",version:2,config:g};function v(e,t){var n={},i="Browser";function a(e){e=""+e;return 1===e.length?"0"+e:e}return n[j+"id"]=i[x](),n[j+"type"]=i,n["ai.operation.name"]=b&&b.pathname||"_unknown_",n["ai.internal.sdkVersion"]="javascript:snippet_"+(h.sv||h.version),{time:(i=new Date).getUTCFullYear()+"-"+a(1+i.getUTCMonth())+"-"+a(i.getUTCDate())+"T"+a(i.getUTCHours())+":"+a(i.getUTCMinutes())+":"+a(i.getUTCSeconds())+"."+(i.getUTCMilliseconds()/1e3).toFixed(3).slice(2,5)+"Z",iKey:e,name:"Microsoft.ApplicationInsights."+e.replace(/-/g,"")+"."+t,sampleRate:100,tags:n,data:{baseData:{ver:2}},ver:undefined,seq:"1",aiDataContract:undefined}}var n,i,t,a,y=-1,T=0,S=["js.monitor.azure.com","js.cdn.applicationinsights.io","js.cdn.monitor.azure.com","js0.cdn.applicationinsights.io","js0.cdn.monitor.azure.com","js2.cdn.applicationinsights.io","js2.cdn.monitor.azure.com","az416426.vo.msecnd.net"],o=g.url||cfg.src,r=function(){return s(o,null)};function s(d,t){if((n=navigator)&&(~(n=(n.userAgent||"").toLowerCase()).indexOf("msie")||~n.indexOf("trident/"))&&~d.indexOf("ai.3")&&(d=d.replace(/(\/)(ai\.3\.)([^\d]*)$/,function(e,t,n){return t+"ai.2"+n})),!1!==cfg.cr)for(var e=0;e<S.length;e++)if(0<d.indexOf(S[e])){y=e;break}var n,i=function(e){var a,t,n,i,o,r,s,c,u,l;h.queue=[],m||(0<=y&&T+1<S.length?(a=(y+T+1)%S.length,p(d.replace(/^(.*\/\/)([\w\.]*)(\/.*)$/,function(e,t,n,i){return t+S[a]+i})),T+=1):(f=m=!0,s=d,!0!==cfg.dle&&(c=(t=function(){var e,t={},n=g.connectionString;if(n)for(var i=n.split(";"),a=0;a<i.length;a++){var o=i[a].split("=");2===o.length&&(t[o[0][x]()]=o[1])}return t[I]||(e=(n=t.endpointsuffix)?t.location:null,t[I]="https://"+(e?e+".":"")+"dc."+(n||"services.visualstudio.com")),t}()).instrumentationkey||g.instrumentationKey||"",t=(t=(t=t[I])&&"/"===t.slice(-1)?t.slice(0,-1):t)?t+"/v2/track":g.endpointUrl,t=g.userOverrideEndpointUrl||t,(n=[]).push((i="SDK LOAD Failure: Failed to load Application Insights SDK script (See stack for details)",o=s,u=t,(l=(r=v(c,"Exception")).data).baseType="ExceptionData",l.baseData.exceptions=[{typeName:"SDKLoadFailed",message:i.replace(/\./g,"-"),hasFullStack:!1,stack:i+"\nSnippet failed to load ["+o+"] -- Telemetry is disabled\nHelp Link: https://go.microsoft.com/fwlink/?linkid=2128109\nHost: "+(b&&b.pathname||"_unknown_")+"\nEndpoint: "+u,parsedStack:[]}],r)),n.push((l=s,i=t,(u=(o=v(c,"Message")).data).baseType="MessageData",(r=u.baseData).message='AI (Internal): 99 message:"'+("SDK LOAD Failure: Failed to load Application Insights SDK script (See stack for details) ("+l+")").replace(/\"/g,"")+'"',r.properties={endpoint:i},o)),s=n,c=t,JSON&&((u=C.fetch)&&!cfg.useXhr?u(c,{method:D,body:JSON.stringify(s),mode:"cors"}):XMLHttpRequest&&((l=new XMLHttpRequest).open(D,c),l.setRequestHeader("Content-type","application/json"),l.send(JSON.stringify(s)))))))},a=function(e,t){m||setTimeout(function(){!t&&h.core||i()},500),f=!1},p=function(e){var n=O.createElement(q),e=(n.src=e,t&&(n.integrity=t),n.setAttribute("data-ai-name",E),cfg[w]);return!e&&""!==e||"undefined"==n[w]||(n[w]=e),n.onload=a,n.onerror=i,n.onreadystatechange=function(e,t){"loaded"!==n.readyState&&"complete"!==n.readyState||a(0,t)},cfg.ld&&cfg.ld<0?O.getElementsByTagName("head")[0].appendChild(n):setTimeout(function(){O.getElementsByTagName(q)[0].parentNode.appendChild(n)},cfg.ld||0),n};p(d)}cfg.sri&&(n=o.match(/^((http[s]?:\/\/.*\/)\w+(\.\d+){1,5})\.(([\w]+\.){0,2}js)$/))&&6===n.length?(d="".concat(n[1],".integrity.json"),i="@".concat(n[4]),l=window.fetch,t=function(e){if(!e.ext||!e.ext[i]||!e.ext[i].file)throw Error("Error Loading JSON response");var t=e.ext[i].integrity||null;s(o=n[2]+e.ext[i].file,t)},l&&!cfg.useXhr?l(d,{method:"GET",mode:"cors"}).then(function(e){return e.json()["catch"](function(){return{}})}).then(t)["catch"](r):XMLHttpRequest&&((a=new XMLHttpRequest).open("GET",d),a.onreadystatechange=function(){if(a.readyState===XMLHttpRequest.DONE)if(200===a.status)try{t(JSON.parse(a.responseText))}catch(e){r()}else r()},a.send())):o&&r();try{h.cookie=O.cookie}catch(k){}function e(e){for(;e.length;)!function(t){h[t]=function(){var e=arguments;f||h.queue.push(function(){h[t].apply(h,e)})}}(e.pop())}var c,u,l="track",d="TrackPage",p="TrackEvent",l=(e([l+"Event",l+"PageView",l+"Exception",l+"Trace",l+"DependencyData",l+"Metric",l+"PageViewPerformance","start"+d,"stop"+d,"start"+p,"stop"+p,"addTelemetryInitializer","setAuthenticatedUserContext","clearAuthenticatedUserContext","flush"]),h.SeverityLevel={Verbose:0,Information:1,Warning:2,Error:3,Critical:4},(g.extensionConfig||{}).ApplicationInsightsAnalytics||{});return!0!==g[L]&&!0!==l[L]&&(e(["_"+(c="onerror")]),u=C[c],C[c]=function(e,t,n,i,a){var o=u&&u(e,t,n,i,a);return!0!==o&&h["_"+c]({message:e,url:t,lineNumber:n,columnNumber:i,error:a,evt:C.event}),o},g.autoExceptionInstrumented=!0),h}(cfg),(C[E]=n).queue&&0===n.queue.length?(n.queue.push(e),n.trackPageView({})):e();})({                
   src: "https://js.monitor.azure.com/scripts/b/ai.3.gbl.min.js",
   crossOrigin: "anonymous",
   // sri: false, // Custom optional value to specify whether fetching the snippet from integrity file and do integrity check
@@ -103,14 +103,34 @@ var configObj = {
 
 <body>
 
-<div class="center-box" data-custom-parentid="Duurzaamheidsradar">
-  <a href="index.html">
-    <img src="SIIA_logo.jpg" alt="SIIA logo">
-  </a>
-  <h1></h1>
+<style>
+  /* Styles for buttons and modal */
+  #edit-mode-toggle { margin-left: 15px; padding: 5px 10px; cursor: pointer; border-radius: 4px; border: 1px solid #ccc; }
+  #edit-mode-toggle.active { background-color: #e0f2f7; border-color: #007351; }
+  #add-label-btn { margin-left: 10px; padding: 5px 10px; cursor: pointer; border-radius: 4px; border: 1px solid #007351; background-color: #007351; color: white; }
+  .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); display:none; justify-content: center; align-items: center; z-index:1000; }
+  .modal-content { background: white; padding: 25px; border-radius:8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); width:90%; max-width:500px; position:relative; }
+  .modal-close-btn { position:absolute; top:10px; right:10px; background:none; border:none; font-size:1.5rem; cursor:pointer; line-height:1; }
+</style>
+
+<div style="text-align:center; margin:20px; position:relative;">
+  <h1>SIIA Radar</h1>
+  <div id="user-menu" style="position:absolute; top:10px; right:10px;">
+    <!-- Auth menu injected here -->
+    <button id="edit-mode-toggle" style="display:none;">Edit Mode</button>
+    <button id="add-label-btn" style="display:none;">Add New Label</button>
+    <button id="canvas-btn" onclick="window.top.location.href='/canvas'" style="margin-left: 10px; padding: 5px 10px; cursor: pointer; border-radius: 4px; border: 1px solid var(--kleur-doing); background-color: var(--kleur-doing); color: white;">Go to Canvas</button>
+        <!-- Personal workspace -->
+        <button id="my-radar-btn"
+                style="margin-left:10px; padding:5px 10px; cursor:pointer;
+                       border-radius:4px; border:1px solid #007351;
+                       background:#007351; color:#fff;">
+            Mijn Radar
+        </button>
+  </div>
 </div>
 
-<svg id="radar" style="display: block; margin: auto"></svg>
+<svg id="radar" width="1700" height="900" style="display:block; margin:auto;"></svg>
 
 <div class="center-box">
   <div class="column">
@@ -177,55 +197,380 @@ var configObj = {
 </div>
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
+<script>window.enableQuickMenu = false;</script>
+
 <script src="radar.js"></script>
-<script>
-  fetch("/versions/versions.json")
-    .then(response => response.json())
-    .then(data => {
-      data.sort((a, b) => a.version < b.version ? 1 : -1);
+  <script>
+    let currentRadarAbort;
+    var deletedItemIdForDebug = null;
+    // Global state management
+    window.lastLoadedConfig = {
+      title: 'SIIA Radar',
+      entries: [],
+      uniqueGroups: [],
+      editMode: false,
+      quadrants: [ // Default quadrant names
+        { name: "IT voor verduurzaming" },
+        { name: "Duurzaam Werken" },
+        { name: "Duurzame Organisatie" },
+        { name: "Duurzame IT" },
+      ],
+      rings: [ // Default ring names
+        { name: "DOING" },
+        { name: "ONGOING" },
+        { name: "PLANNING" },
+        { name: "UNDOING" }
+      ],
+      // Hardcoded user ID for local development
+      userId: '478aaa60-2a14-48d5-8cd0-d0cf9558d584' 
+    };
+
+    // Resolve correct PHP path for localhost vs production
+    function api(relative){
+        return (window.location.hostname === 'localhost' ? 'api/' : '') + relative;
+    }
+
+    // --- Data Transformation ---
+    function mapStatusRingToIndex(status) {
+        // Maps the text status from the database to a 0-based ring index
+        const mapping = {
+            'ADOPT': 0,   // DOING
+            'TRIAL': 1,   // ONGOING
+            'ASSESS': 2,  // PLANNING
+            'HOLD': 3,    // UNDOING
+            'AVOID': 3    // Also map AVOID to UNDOING
+        };
+        // Return the mapped index, or a default/error value if not found
+        const index = mapping[status];
+        return index !== undefined ? index : 3; // Default to the outermost ring
+    }
+
+    // --- Data Fetching ---
+    function loadAndDisplayRadar() {
+      const userId = window.lastLoadedConfig.userId;
+      if (!userId) {
+        console.error("User ID is not set. Cannot fetch data.");
+        return;
+      }
       
-      // haal versie uit evt. query params of anders de meest recente versie
-      const searchParams = new URLSearchParams(window.location.search);
-      let versionString = searchParams.get('version');
-      if (!data.some(d => d.version === versionString)) {
-        versionString = data[0].version;
+      const isMyRadarPage = window.location.pathname.includes('mijnradar.html');
+
+      // --- PUBLIC LANDING: load static JSON straight away ---
+      if (!isMyRadarPage) {
+          loadFromLocalJson();
+          return;
       }
 
-      const versionData = data.find(d => d.version === versionString);
-
-      const config = {
-        title: versionData.title
-      };
-
-      fetch(`/versions/${versionString}.json`)
-        .then(response => response.json())
-        .then(entries => {
-          config.entries = entries;
-          
-           // Vul quadrantGroups met unieke waarden
-          let quadrantGroups = Array(4).fill(null).map(() => new Set());
-          config.entries.forEach(entry => {
-            if (entry.quadrant >= 0 && entry.quadrant < 4) {
-              quadrantGroups[entry.quadrant].add(entry.group); // Unieke waarden toevoegen
-            }
-          });
-
-
-          // Zet Sets om naar arrays en sorteer alfabetisch
-          quadrantGroups = quadrantGroups.map(groupSet =>
-            Array.from(groupSet).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }))
-          );
-
-          console.log("Sorted Quadrant Groups:", quadrantGroups); // Debugging log
-          // Debugging logs
-          //console.log("Entries:", config.entries);
-          //console.log("Unique Quadrant Groups:", quadrantGroups);
-
-          config.quadrantGroups = quadrantGroups;
-          radar_visualization(config);
+      // --- PERSONAL WORKSPACE: keep using the PHP API ---
+      fetch(api(`labels.php?user_id=${userId}`))
+        .then(r => (r.ok ? r.json() : Promise.reject(new Error(r.statusText))))
+        .then(data => processPhpResponse(data))
+        .catch(err => {
+            console.warn('[Radar] PHP fetch failed, falling back to JSON –', err.message);
+            loadFromLocalJson();
         });
+
+      /* ---------- helpers ------------ */
+      function processPhpResponse(data){
+          // keep only WiGo4IT's default set
+          const DEFAULT_IDS = Array.from({length:69}, (_,i)=>259+i);
+          const entries = data.filter(l=>DEFAULT_IDS.includes(Number(l.id)))
+              .map(l=>({
+                   quadrant: +l.quadrant,
+                   ring: mapStatusRingToIndex(l.status_ring),
+                   label: l.label,
+                   group: l.group,
+                   link: 'wiki.html?title='+encodeURIComponent(l.label),
+                   id: l.id,
+                   moved:0,
+                   active: l.active!==0 && l.active!==false
+              }));
+          render(entries);
+      }
+
+      function loadFromLocalJson(){
+          fetch('versions/2024-11.json')
+            .then(r=>r.ok?r.json():Promise.reject('missing json'))
+            .then(json=>{
+                 let id=259;
+                 const entries=json.map(it=>({
+                     quadrant:+((it.quadrant ?? it.old_quadrant) ?? 0),
+                     ring:+it.ring||0,
+                     label:it.label,
+                     group:it.group||it.radarcat||'N/A',
+                     link:'wiki.html?title='+encodeURIComponent(it.label),
+                     id:id++,
+                     moved:0,
+                     active:true
+                 }));
+                 render(entries);
+            })
+            .catch(e=>{
+                document.getElementById('radar').innerHTML=`<p style='color:red;text-align:center;'>Error loading static labels: ${e}</p>`;
+            });
+      }
+
+      function render(entries){
+          // Partition and assign displayId
+          const seg=[[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]]];
+          let disp=1;
+          entries.forEach(e=>seg[e.quadrant][e.ring].push(e));
+          for(const q of [2,3,1,0]) for(let r=0;r<4;r++) for(const e of seg[q][r]) e.displayId=disp++;
+
+          window.lastLoadedConfig.entries=entries;
+          radar_visualization(window.lastLoadedConfig);
+      }
+    }
+
+    // --- UI and Event Listeners ---
+    function initializeUI() {
+        const menu = document.getElementById('user-menu');
+    
+            // --- Ensure a user label is visible ---
+            if (menu && !document.getElementById('user-name')) {
+                const userSpan = document.createElement('span');
+                userSpan.id = 'user-name';
+                userSpan.style.marginRight = '8px';
+                menu.prepend(userSpan);
+            }
+    
+            // --- Wire-up Edit toggle and Add button ---
+            const editToggleBtn = document.getElementById('edit-mode-toggle');
+            const addLabelBtn   = document.getElementById('add-label-btn');
+            const canvasBtn     = document.getElementById('canvas-btn');
+    
+            // New: flag – are we on the personal workspace?
+            const isMyRadarPage = window.location.pathname.includes('mijnradar.html');
+    
+            if (editToggleBtn) {
+                if (isMyRadarPage) {
+                    editToggleBtn.style.display = 'inline-block';
+                    editToggleBtn.addEventListener('click', toggleEditMode);
+                } else {
+                    editToggleBtn.style.display = 'none';
+                }
+            }
+    
+            if (addLabelBtn) {
+                if (isMyRadarPage) {
+                    addLabelBtn.onclick = () => openModal();
+                } else {
+                    addLabelBtn.style.display = 'none';
+                }
+            }
+    
+            // Canvas button hidden on default landing page
+            if (canvasBtn) {
+                canvasBtn.style.display = isMyRadarPage ? 'inline-block' : 'none';
+            }
+    
+            /* --- Mijn Radar navigation --- */
+            const myRadarBtn = document.getElementById('my-radar-btn');
+            if (myRadarBtn) {
+                myRadarBtn.onclick = () => window.location.href = 'mijnradar.html';
+            }
+    
+            updateEditUI(); // reflect initial state
+        }
+    
+        // Update button visibility/text based on current mode
+        function updateEditUI() {
+            const isEdit = window.lastLoadedConfig.editMode;
+            const addLabelBtn   = document.getElementById('add-label-btn');
+            const editToggleBtn = document.getElementById('edit-mode-toggle');
+    
+            if (addLabelBtn) {
+                addLabelBtn.style.display = isEdit ? 'inline-block' : 'none';
+            }
+    
+            if (editToggleBtn) {
+                editToggleBtn.textContent = isEdit ? 'View' : 'Edit';
+                editToggleBtn.title       = isEdit ? 'Return to viewing mode' : 'Switch to edit mode';
+            }
+        }
+    
+        // Toggle between viewing and editing modes
+        function toggleEditMode() {
+            window.lastLoadedConfig.editMode = !window.lastLoadedConfig.editMode;
+            updateEditUI();
+            loadAndDisplayRadar(); // re-render visualization with new mode
+    }
+
+    // --- Main Execution ---
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeUI();
+      loadAndDisplayRadar();
     });
-</script>
+
+  </script>
+
+<!-- Add/Edit Label Modal -->
+<div id="label-modal" class="modal-overlay">
+  <div class="modal-content">
+    <button class="modal-close-btn" onclick="closeModal()">&times;</button>
+    <h3 id="modal-title">Label Details</h3>
+    <form id="label-form">
+      <input type="hidden" id="label-id">
+      <div><label>Label:</label><input type="text" id="label-name" required></div>
+      <div><label>Quadrant:</label><select id="label-quadrant" required></select></div>
+      <div><label>Ring:</label><select id="label-ring" required></select></div>
+      <div><label>Theme:</label><select id="label-theme" required></select></div>
+      <div><label>Wiki Link:</label><input type="text" id="label-link"></div>
+      
+      <!-- New Message Area for Modal -->
+      <div id="label-modal-message" style="color: red; margin-top: 10px; text-align: left;"></div>
+
+      <div style="margin-top:20px;text-align:right;">
+        <button type="button" onclick="closeModal()">Cancel</button>
+        <button type="button" id="delete-label-btn" style="float:left;display:none;">Delete</button>
+        <button type="submit">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+  <script>
+  // --- Modal control & form handlers ---
+  function openModal(d) { // 'd' is the label data object for editing, undefined for adding
+    const isEditing = d !== undefined && d !== null;
+
+    // Get form elements
+    const modal = document.getElementById('label-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const labelIdInput = document.getElementById('label-id');
+    const labelNameInput = document.getElementById('label-name');
+    const labelQuadrantSelect = document.getElementById('label-quadrant');
+    const labelRingSelect = document.getElementById('label-ring');
+    const labelThemeSelect = document.getElementById('label-theme');
+    const labelLinkInput = document.getElementById('label-link');
+    const deleteButton = document.getElementById('delete-label-btn');
+
+    // Set Title
+    modalTitle.textContent = isEditing ? 'Edit Label' : 'Add New Label';
+
+    // Populate/Reset basic fields
+    labelIdInput.value = isEditing ? d.id : '';
+    labelNameInput.value = isEditing ? d.label : '';
+    labelLinkInput.value = isEditing ? d.link : '';
+
+    // --- Populate Dropdowns ---
+    // Quadrants (0-3)
+    labelQuadrantSelect.innerHTML = ''; // Clear existing
+    const quadrants = window.lastLoadedConfig?.quadrants || [];
+    quadrants.forEach((q, index) => {
+      const option = document.createElement('option');
+      option.value = index;
+      option.textContent = `${index}: ${q.name}`;
+      if (isEditing && d.quadrant === index) {
+        option.selected = true;
+      }
+      labelQuadrantSelect.appendChild(option);
+    });
+
+    // Rings (0-3)
+    labelRingSelect.innerHTML = ''; // Clear existing
+    const rings = window.lastLoadedConfig?.rings || [];
+    rings.forEach((r, index) => {
+      const option = document.createElement('option');
+      option.value = index;
+      option.textContent = `${index}: ${r.name}`;
+      if (isEditing && d.ring === index) {
+        option.selected = true;
+      }
+      labelRingSelect.appendChild(option);
+    });
+
+    // Themes (use uniqueGroups from global config)
+    labelThemeSelect.innerHTML = ''; // Clear existing
+    const themes = window.lastLoadedConfig?.uniqueGroups || [];
+    themes.forEach(theme => {
+      const option = document.createElement('option');
+      option.value = theme;
+      option.textContent = theme;
+      if (isEditing && d.group === theme) {
+        option.selected = true;
+      }
+      labelThemeSelect.appendChild(option);
+    });
+
+    // --- Show/Hide Delete Button ---
+    deleteButton.style.display = isEditing ? 'inline-block' : 'none';
+
+    // Display the modal
+    modal.style.display = 'flex';
+  }
+  function closeModal(){ document.getElementById('label-modal').style.display='none'; }
+  document.getElementById('label-form').onsubmit = async e=>{
+    e.preventDefault();
+    const id = document.getElementById('label-id').value;
+    let payload = {
+        label: document.getElementById('label-name').value,
+        quadrant: +document.getElementById('label-quadrant').value,
+        ring: +document.getElementById('label-ring').value,
+        group: document.getElementById('label-theme').value,
+            link: document.getElementById('label-link').value,
+            supabase_user_id: window.lastLoadedConfig.userId
+    };
+    const isEditing = !!id;
+
+        let url = isEditing ? api('update_label.php') : api('create_label.php');
+    if (isEditing) {
+        payload.id = id; // Add id to payload for update
+    }
+    
+    // Clear previous messages and disable button (optional, for better UX)
+    const modalMessageArea = document.getElementById('label-modal-message'); // Assuming you add a message area div
+    if (modalMessageArea) {
+        modalMessageArea.textContent = '';
+        modalMessageArea.className = 'modal-message'; // Reset class
+    }
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST', // Use POST for both create and update
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            // Try to parse error JSON, then fall back to status text
+            let errorDetail = `Request failed with status: ${response.status}`;
+            try {
+                const errData = await response.json();
+                if (errData.errors && Array.isArray(errData.errors)) {
+                    errorDetail = errData.errors.map(er => er.msg).join(', ');
+                } else if (errData.error) {
+                    errorDetail = errData.error;
+                }
+            } catch (parseError) { /* Ignore if body isn't JSON or empty */ }
+            throw new Error(errorDetail);
+        }
+
+        // If response.ok, proceed
+        closeModal(); 
+        loadAndDisplayRadar();
+
+    } catch (error) {
+        console.error('Error saving label:', error);
+        if (modalMessageArea) {
+            modalMessageArea.textContent = error.message;
+            modalMessageArea.className = 'modal-message error'; // Add error class for styling
+        } else {
+            alert('Error saving label: ' + error.message); // Fallback to alert
+        }
+    }
+  };
+  document.getElementById('delete-label-btn').onclick = async () =>{
+    const id = document.getElementById('label-id').value;
+    if(!confirm('Delete?')) return;
+        const res = await fetch(api('delete_label.php'), {
+        method: 'POST', // Use POST for reliability
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ id: id })
+    });
+    if(res.ok){ closeModal(); deletedItemIdForDebug=id; loadAndDisplayRadar(); } else alert('Delete failed');
+  };
+  </script>
 
 </body>
-</html>
+</html> 
