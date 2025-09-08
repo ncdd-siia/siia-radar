@@ -19,8 +19,11 @@ Wigo4it heeft flink wat self-service geïmplementeerd. Het mooiste voorbeeld vin
 ## Waar kan ik hier meer over lezen?
 <<<<<<< Updated upstream:wiki/selfService.md
 - <a href="https://en.wikipedia.org/wiki/Self-service">Self-service</a>
+<<<<<<< Updated upstream:wiki/selfService.md
 =======
 - <a href="https://en.wikipedia.org/wiki/Self-service">Self-service</a>
+=======
+>>>>>>> Stashed changes:wiki/self-service.md
 
 
 
@@ -28,4 +31,7 @@ Wigo4it heeft flink wat self-service geïmplementeerd. Het mooiste voorbeeld vin
 
 
 
+<<<<<<< Updated upstream:wiki/selfService.md
+>>>>>>> Stashed changes:wiki/self-service.md
+=======
 >>>>>>> Stashed changes:wiki/self-service.md
